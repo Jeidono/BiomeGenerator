@@ -14,7 +14,7 @@
 		<style>
     			body {
     				font-family: Monospace;
-    				background-color: #000;
+    				background-color: rgb(105, 187, 214);
     				color: #fff;
     				margin: 0px;
     				overflow: hidden;
@@ -28,7 +28,7 @@
 		</style>
 
 		<div id="info">
-			<p>Move aron=und with W,A,S,D<br>
+			<p>Move around with W,A,S,D<br>
 			look around with the mouse</p>
 		</div>
 
@@ -91,10 +91,9 @@
 		planeMaterial.wireframe = true;
 		var plane = new THREE.Mesh (planeGeometry, planeMaterial);
 
-		plane.rotation.x = -Math.PI / 2.2;
+		plane.rotation.x = -Math.PI/2;
+		plane.position.y = -2;
 		scene.add(plane);
-
-		//
 
 		  
 	</script>
