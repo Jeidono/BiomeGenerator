@@ -40,6 +40,7 @@
 
     import * as THREE from 'three';4
     import { OrbitControls } from './build/controls/OrbitControls.js';
+    import {OBJLoader } from './build/controls/OBJLoader.js';
 
     //creating scene
     var scene = new THREE.Scene( );
@@ -65,6 +66,8 @@
 
   };
 
+
+
   requestAnimationFrame(MyUpdateLoop);
 
   var MyResize = function ( )
@@ -80,9 +83,15 @@
   window.addEventListener('resize', MyResize);
   var cubes = [];
   var n = 300;
-  var yPosition = -2;
 
-  //generate position for trees test
+//load in trees
+  var loader = new OBJLoader();
+  loader.load('../../Assets/Trees/baretreeWithHole.obj', function(geometry)
+{
+//
+});
+
+  //generate position for trees
 
   function generatePosition(cubes, size, gap, yPosition){
     var maxAttempts = 1000;
@@ -109,6 +118,9 @@
     function addCubes()
     {
       for(var i = 0; i < n; i++){
+      
+      
+      
       var material_cube = new THREE.MeshBasicMaterial({ color: Math.random() * 0xffffff});
       material_cube.wireframe=true;
       var geometry_cube = new THREE.BoxGeometry(1,1,1);
