@@ -15,7 +15,7 @@
     <style>
     			body {
     				font-family: Monospace;
-    				background-color: lightblue;
+    				background-color: black;
     				color: #fff;
     				margin: 0px;
     				overflow: hidden;
@@ -55,7 +55,6 @@
     renderer.setSize(window.innerWidth,window.innerHeight);
     document.body.appendChild(renderer.domElement );
   
-  
 //controls for camera
   var controls = new OrbitControls( camera, renderer.domElement );
   var MyUpdateLoop = function ( )
@@ -78,48 +77,45 @@
     renderer.render(scene,camera);
   };
 
-  window.addEventListener( 'resize', MyResize);
+  window.addEventListener('resize', MyResize);
   var cubes = [];
   var n = 300;
-  var xAxisSpawn = 0;
+  var yPosition = -2;
 
   //generate position for trees test
 
   function generatePosition(cubes, size, gap, yPosition){
-    while (true){
+    var maxAttempts = 1000;
+    var attempts = 0;
+    
+    while (attempts < maxAttempts){
       var position = new THREE.Vector3(
         (Math.random() - 0.5) * size,
         yPosition,
         (Math.random() - 0.5) * size
       );
 
-      var collides = cubes.some(cube => position.distanceTo(cube.position) <= cube.geometry.parameters.width + gap);
+      var collides = cubes.some(cubes => position.distanceTo(cubes.position) <= cubes.geometry.parameters.width + gap);
 
       if(!collides) {
         return position;
       }
+      attempts++;
     }
+    return new THREE.Vector3(0, yPosition, 0);
   }
-
 
     //creating multiple different cubes
     function addCubes()
     {
-      for(i = 0; i < cubes.length; i++){
-        scene.remove(cubes[i]);
-      }
-      cubes = [];
-
       for(var i = 0; i < n; i++){
       var material_cube = new THREE.MeshBasicMaterial({ color: Math.random() * 0xffffff});
       material_cube.wireframe=true;
       var geometry_cube = new THREE.BoxGeometry(1,1,1);
 
-     var cube = new THREE.Mesh(geometry_cube, material_cube);
+      cubes[i] = new THREE.Mesh(geometry_cube, material_cube);
 
-     cube.position.copy(generatePosition(cubes, xAxisSpawn, geometry_cube.parameters.width, 0));
-
-     cubes[i] = cube;
+      cubes[i].position.copy(generatePosition(cubes, 100, geometry_cube.parameters.width, 0));
 
       scene.add(cubes[i]); 
 
