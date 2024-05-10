@@ -81,27 +81,15 @@
   };
 
   window.addEventListener('resize', MyResize);
-  var cubes = [];
+
+  var trees = [];
   var n = 300;
 
-//load in trees
+//loading in different tree types
 const objLoader = new OBJLoader();
-objLoader.load('../../Assets/Trees/baretreeWithHole.obj', (root) => {
-  var material = new THREE.MeshBasicMaterial();
-  material.color= new THREE.Color(0.8, 0.8, 0.8, 0,8);
-  material.wireframe = true;
-  //material.shininess = 100;
-  root.traverse((child) => {
-    if(child instanceof THREE.Mesh) {
-      child.material = material;
-    }
-  });
-  scene.add(root);
-});
 
   //generate position for trees
-
-  function generatePosition(cubes, size, gap, yPosition){
+  function generatePosition(trees, size, gap, yPosition){
     var maxAttempts = 1000;
     var attempts = 0;
     
@@ -112,7 +100,7 @@ objLoader.load('../../Assets/Trees/baretreeWithHole.obj', (root) => {
         (Math.random() - 0.5) * size
       );
 
-      var collides = cubes.some(cubes => position.distanceTo(cubes.position) <= cubes.geometry.parameters.width + gap);
+      var collides = trees.some(trees => position.distanceTo(trees.position) <= trees.geometry.parameters.width + gap);
 
       if(!collides) {
         return position;
@@ -123,13 +111,44 @@ objLoader.load('../../Assets/Trees/baretreeWithHole.obj', (root) => {
   }
 
     //creating multiple different cubes
-    function addCubes()
+    function addTrees()
     {
       for(var i = 0; i < n; i++){
+        var treeModel;
+        var rand = Math.random();
+
+        if (rand < 1/7) {
+          treeModel = '../../Assets/Trees/bareTreeWithHole.obj';
+        } else if (rand < 2/7) {
+          treeModel = '../../Assets/Trees/chunkyTree.obj';
+        } else if(rand < 3/7){
+          treeModel = '../../Assets/Trees/shortNoLeaves.obj';
+        }else if(rand < 4/7){
+          treeModel = '../../Assets/Trees/skinnyShortTree.obj';
+        }else if(rand < 5/7){
+          treeModel = '../../Assets/Trees/skinnyTallTree.obj';
+        }else if(rand < 6/7){
+          treeModel = '../../Assets/Trees/tallNoLeaves.obj';
+        }else{
+          treeModel = '../../Assets/Trees/tallTree.obj';
+        }
+
+        objLoader.load(treeModel, (root) => {
+          var material = new THREE.MeshBasicMaterial({color: Math.random() * 0xffffff});
+          material.wireframe = true;
+          root.traverse((child) => {
+            if(child instanceof THREE.Mesh) {
+              child.material = material;
+            }
+          });
+
+          root.position.copy(generatePosition(trees, 100, 10, 0));
+
+          scene.add(root);
+        });
       
       
-      
-      var material_cube = new THREE.MeshBasicMaterial({ color: Math.random() * 0xffffff});
+      /*var material_cube = new THREE.MeshBasicMaterial({ color: Math.random() * 0xffffff});
       material_cube.wireframe=true;
       var geometry_cube = new THREE.BoxGeometry(1,1,1);
 
@@ -137,13 +156,13 @@ objLoader.load('../../Assets/Trees/baretreeWithHole.obj', (root) => {
 
       cubes[i].position.copy(generatePosition(cubes, 100, geometry_cube.parameters.width, 0));
 
-      scene.add(cubes[i]); 
+      scene.add(cubes[i]); */
 
       }
 
     }
 
-    addCubes();
+    addTrees();
 
     </script>
   </body>
