@@ -86,7 +86,7 @@
 
 //load in trees
 const objLoader = new OBJLoader();
-objLoader.load('../../Assets/Trees/baretreeWithHole.obj', '../../Assets/Trees/chunkyTree.obj', (root) => {
+objLoader.load('../../Assets/Trees/baretreeWithHole.obj', (root) => {
   var material = new THREE.MeshBasicMaterial();
   material.color= new THREE.Color(0.8, 0.8, 0.8, 0,8);
   material.wireframe = true;
