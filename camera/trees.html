@@ -90,7 +90,7 @@ var groundGeometry = new THREE.PlaneGeometry(120, 120);
 var groundMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00, side: THREE.DoubleSide });
 var groundPlane = new THREE.Mesh(groundGeometry, groundMaterial);
 groundPlane.rotation.x = -Math.PI / 2; // Rotate the plane to be horizontal
-groundPlane.position.y = -1; // Adjust the position to be below the trees
+groundPlane.position.y = 0; // Adjust the position to be below the trees
 scene.add(groundPlane);
 
 //loading in different tree types
