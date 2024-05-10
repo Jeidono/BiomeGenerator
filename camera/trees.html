@@ -15,7 +15,7 @@
     <style>
     			body {
     				font-family: Monospace;
-    				background-color: black;
+    				background-color: lightblue;
     				color: #fff;
     				margin: 0px;
     				overflow: hidden;
@@ -40,7 +40,7 @@
 
     import * as THREE from 'three';4
     import { OrbitControls } from './build/controls/OrbitControls.js';
-    import {OBJLoader } from './build/controls/OBJLoader.js';
+    import { OBJLoader } from './build/controls/OBJLoader.js';
 
     //creating scene
     var scene = new THREE.Scene( );
@@ -85,10 +85,18 @@
   var n = 300;
 
 //load in trees
-  var loader = new OBJLoader();
-  loader.load('../../Assets/Trees/baretreeWithHole.obj', function(geometry)
-{
-//
+const objLoader = new OBJLoader();
+objLoader.load('../../Assets/Trees/baretreeWithHole.obj', '../../Assets/Trees/chunkyTree.obj', (root) => {
+  var material = new THREE.MeshBasicMaterial();
+  material.color= new THREE.Color(0.8, 0.8, 0.8, 0,8);
+  material.wireframe = true;
+  //material.shininess = 100;
+  root.traverse((child) => {
+    if(child instanceof THREE.Mesh) {
+      child.material = material;
+    }
+  });
+  scene.add(root);
 });
 
   //generate position for trees
