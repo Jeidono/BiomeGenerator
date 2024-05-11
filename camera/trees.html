@@ -41,6 +41,7 @@
     import * as THREE from 'three';4
     import { OrbitControls } from './build/controls/OrbitControls.js';
     import { OBJLoader } from './build/controls/OBJLoader.js';
+    import { GUI } from './build/controls/lil-gui.module.min.js';
 
     //creating scene
     var scene = new THREE.Scene( );
@@ -163,6 +164,25 @@ const objLoader = new OBJLoader();
     }
 
     addTrees();
+
+    //GUI
+    const gui = new GUI();
+
+    const resetParams = () => {
+      gui.reset();
+    }
+
+    const defaultParameters = {
+      resetParams: resetParams,
+      amountOfTrees: n
+    };
+
+    //controls for parameters
+    gui.add(defaultParameters, 'resetParams').name("Reset Parameters");
+    gui.add(defaultParameters, 'amountOfTrees', 0, 1000).name("Set Amount Of Trees").onChange(function(value) {
+      n = value;
+      addTrees();
+    });
 
     </script>
   </body>
