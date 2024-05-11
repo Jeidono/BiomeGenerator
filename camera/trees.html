@@ -124,6 +124,10 @@ const objLoader = new OBJLoader();
     //creating multiple different trees
     function addTrees()
     {
+      for(i = 0; i < trees.length; i++){
+        scene.remove(trees[i]);
+      }
+      trees = [];
       for(var i = 0; i < n; i++){
         var treeModel;
         var rand = Math.random();
@@ -157,15 +161,11 @@ const objLoader = new OBJLoader();
 
           scene.add(root);
         });
-    
-
       }
-
     }
-
     addTrees();
 
-    //GUI
+    /* //GUI
     const gui = new GUI();
 
     const resetParams = () => {
@@ -182,7 +182,7 @@ const objLoader = new OBJLoader();
     gui.add(defaultParameters, 'amountOfTrees', 0, 1000).name("Set Amount Of Trees").onChange(function(value) {
       n = value;
       addTrees();
-    });
+    }); */
 
     </script>
   </body>
