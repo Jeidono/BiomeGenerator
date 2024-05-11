@@ -88,6 +88,7 @@
   // Create a ground plane
 var groundGeometry = new THREE.PlaneGeometry(120, 120);
 var groundMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00, side: THREE.DoubleSide });
+groundMaterial.wireframe = true;
 var groundPlane = new THREE.Mesh(groundGeometry, groundMaterial);
 groundPlane.rotation.x = -Math.PI / 2; // Rotate the plane to be horizontal
 groundPlane.position.y = 0; // Adjust the position to be below the trees
@@ -108,7 +109,8 @@ const objLoader = new OBJLoader();
         (Math.random() - 0.5) * size
       );
 
-      var collides = trees.some(trees => position.distanceTo(trees.position) <= trees.geometry.parameters.width + gap);
+      var collides = trees.some(trees => position.distanceTo(trees.position) <= 
+      trees.geometry.parameters.width + gap);
 
       if(!collides) {
         return position;
@@ -118,7 +120,7 @@ const objLoader = new OBJLoader();
     return new THREE.Vector3(0, yPosition, 0);
   }
 
-    //creating multiple different cubes
+    //creating multiple different trees
     function addTrees()
     {
       for(var i = 0; i < n; i++){
@@ -154,17 +156,7 @@ const objLoader = new OBJLoader();
 
           scene.add(root);
         });
-      
-
-      /*var material_cube = new THREE.MeshBasicMaterial({ color: Math.random() * 0xffffff});
-      material_cube.wireframe=true;
-      var geometry_cube = new THREE.BoxGeometry(1,1,1);
-
-      cubes[i] = new THREE.Mesh(geometry_cube, material_cube);
-
-      cubes[i].position.copy(generatePosition(cubes, 100, geometry_cube.parameters.width, 0));
-
-      scene.add(cubes[i]); */
+    
 
       }
 
