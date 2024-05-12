@@ -97,14 +97,26 @@
   var trees = [];
   var n = 300;
 
-  // Create a ground plane
+  // Create a grass plane
 const grassTexture = new THREE.TextureLoader().load('../../Assets/grass.jpg');
-var groundGeometry = new THREE.PlaneGeometry(120, 120);
-var groundMaterial = new THREE.MeshBasicMaterial({ map: grassTexture, side: THREE.DoubleSide });
-var groundPlane = new THREE.Mesh(groundGeometry, groundMaterial);
-groundPlane.rotation.x = -Math.PI / 2; // Rotate the plane to be horizontal
-groundPlane.position.y = -1; // Adjust the position to be below the trees
-scene.add(groundPlane);
+const grassGeometry = new THREE.PlaneGeometry(10, 10);
+const grassMaterial = new THREE.MeshBasicMaterial({ map: grassTexture, side: THREE.DoubleSide });
+const grassplaneNum = 10;
+const numRows = 12;
+const numCols = 12;
+const planeSize = 10; // Size of each grass plane
+
+for (let row = 0; row < numRows; row++) {
+    for (let col = 0; col < numCols; col++) {
+        const xPos = col * (planeSize) - (numCols * (planeSize)) / 2;
+        const zPos = row * (planeSize) - (numRows * (planeSize)) / 2;
+
+        const grassPlane = new THREE.Mesh(grassGeometry, grassMaterial);
+        grassPlane.position.set(xPos, -2.01, zPos);
+        grassPlane.rotation.x = -Math.PI / 2;
+        scene.add(grassPlane);
+    }
+}
 
 //loading in different tree types
 const objLoader = new OBJLoader();
