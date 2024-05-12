@@ -43,6 +43,7 @@
     import { FirstPersonControls } from './build/controls/FirstPersonControls.js';
     import { OBJLoader } from './build/controls/OBJLoader.js';
     import { GUI } from './build/controls/lil-gui.module.min.js';
+    import {MTLLoader } from './build/controls/MTLLoader.js';
 
     //creating scene
     var scene = new THREE.Scene( );
@@ -108,6 +109,7 @@ scene.add(groundPlane);
 
 //loading in different tree types
 const objLoader = new OBJLoader();
+const mtlLoader = new MTLLoader();
 
   //generate position for trees
   function generatePosition(trees, size, gap, yPosition){
@@ -161,6 +163,7 @@ const objLoader = new OBJLoader();
         objLoader.load(treeModel, (root) => {
           var material = new THREE.MeshBasicMaterial({color: Math.random() * 0xffffff});
           material.wireframe = true;
+          
 
           //adjust gap
           var bbox = new THREE.Box3().setFromObject(root);
