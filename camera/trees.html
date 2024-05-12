@@ -98,9 +98,9 @@
   var n = 300;
 
   // Create a ground plane
+const grassTexture = new THREE.TextureLoader().load('../../Assets/grass.jpg');
 var groundGeometry = new THREE.PlaneGeometry(120, 120);
-var groundMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00, side: THREE.DoubleSide });
-groundMaterial.wireframe = true;
+var groundMaterial = new THREE.MeshBasicMaterial({ map: grassTexture, side: THREE.DoubleSide });
 var groundPlane = new THREE.Mesh(groundGeometry, groundMaterial);
 groundPlane.rotation.x = -Math.PI / 2; // Rotate the plane to be horizontal
 groundPlane.position.y = -1; // Adjust the position to be below the trees
