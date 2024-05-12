@@ -191,6 +191,7 @@ const objLoader = new OBJLoader();
     var sky = new THREE.Mesh(skyGeometry, skyMaterial);
     scene.add(sky);
 
+    // adding the clouds
     const cloudModel = '../../Assets/cloud.obj';
     objLoader.load (cloudModel, (root) => {
       const cloudMaterial = new THREE.MeshBasicMaterial({color: 0xffffff});
@@ -199,7 +200,7 @@ const objLoader = new OBJLoader();
           child.material = cloudMaterial;
         }
       })
-      root.scale.set(50, 50, 25);
+      root.scale.set(50, 50, 100);
       root.position.set(0, 20, 0);
       scene.add(root);
     });
