@@ -111,7 +111,7 @@ const objLoader = new OBJLoader();
 
   //generate position for trees
   function generatePosition(trees, size, gap, yPosition){
-    var maxAttempts = 1000;
+    var maxAttempts = 100000;
     var attempts = 0;
     
     while (attempts < maxAttempts){
@@ -146,20 +146,20 @@ const objLoader = new OBJLoader();
         var treeModel;
         var rand = Math.random();
 
-        if (rand < 1/7) {
+        if (rand < 0.2) {
           treeModel = '../../Assets/Trees/bareTreeWithHole.obj';
-        } else if (rand < 2/7) {
+        } else if (rand < 0.6) {
           treeModel = '../../Assets/Trees/chunkyTree.obj';
-        } else if(rand < 3/7){
+        } else if(rand < 0.15){
           treeModel = '../../Assets/Trees/shortNoLeaves.obj';
-        }else if(rand < 4/7){
+        }else if(rand < 0.6){
           treeModel = '../../Assets/Trees/skinnyShortTree.obj';
-        }else if(rand < 5/7){
+        }else if(rand < 0.6){
           treeModel = '../../Assets/Trees/skinnyTallTree.obj';
-        }else if(rand < 6/7){
-          treeModel = '../../Assets/Trees/tallNoLeaves.obj';
-        }else{
+        }else if(rand < 0.9){
           treeModel = '../../Assets/Trees/tallTree.obj';
+        }else{
+          treeModel = '../../Assets/Trees/tallNoLeaves.obj';
         }
 
         objLoader.load(treeModel, (root) => {
@@ -177,7 +177,7 @@ const objLoader = new OBJLoader();
             }
           });
 
-          root.position.copy(generatePosition(trees, 100, 100, -2));  //trees, size, gap, yPosition
+          root.position.copy(generatePosition(trees, 100, 100000000, -2));  //trees, size, gap, yPosition
 
           //Adjust y-position
           var height = bbox.max.y - bbox.min.y;
