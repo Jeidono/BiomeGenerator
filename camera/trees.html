@@ -59,16 +59,28 @@
     document.body.appendChild(renderer.domElement );
   
 		//controls for camera
-		var controls = new FirstPersonControls(camera, renderer.domElement);
+		/*var controls = new FirstPersonControls(camera, renderer.domElement);
 
 		var MyUpdateLoop = function(){
 			controls.update(1);
 			renderer.render(scene,camera);
 			requestAnimationFrame(MyUpdateLoop);
-		};
+		};*/
+
+    //controls for camera
+  var controls = new OrbitControls( camera, renderer.domElement );
+  var MyUpdateLoop = function ( )
+  {
+    renderer.render(scene,camera);
+    controls.update();
+    requestAnimationFrame(MyUpdateLoop);
+
+  };
 
 
   requestAnimationFrame(MyUpdateLoop);
+
+  
 
   var MyResize = function ( )
   {
