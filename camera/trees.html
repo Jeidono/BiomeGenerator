@@ -40,6 +40,7 @@
 
     import * as THREE from 'three';4
     import { OrbitControls } from './build/controls/OrbitControls.js';
+    import { FirstPersonControls } from './build/controls/FirstPersonControls.js';
     import { OBJLoader } from './build/controls/OBJLoader.js';
     import { GUI } from './build/controls/lil-gui.module.min.js';
 
@@ -57,16 +58,14 @@
     renderer.setSize(window.innerWidth,window.innerHeight);
     document.body.appendChild(renderer.domElement );
   
-//controls for camera
-  var controls = new OrbitControls( camera, renderer.domElement );
-  var MyUpdateLoop = function ( )
-  {
-    renderer.render(scene,camera);
-    controls.update();
-    requestAnimationFrame(MyUpdateLoop);
+		//controls for camera
+		var controls = new FirstPersonControls(camera, renderer.domElement);
 
-  };
-
+		var MyUpdateLoop = function(){
+			controls.update(1);
+			renderer.render(scene,camera);
+			requestAnimationFrame(MyUpdateLoop);
+		};
 
 
   requestAnimationFrame(MyUpdateLoop);
@@ -92,7 +91,7 @@ var groundMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00, side: THREE.
 groundMaterial.wireframe = true;
 var groundPlane = new THREE.Mesh(groundGeometry, groundMaterial);
 groundPlane.rotation.x = -Math.PI / 2; // Rotate the plane to be horizontal
-groundPlane.position.y = 0; // Adjust the position to be below the trees
+groundPlane.position.y = -1; // Adjust the position to be below the trees
 scene.add(groundPlane);
 
 //loading in different tree types
@@ -157,7 +156,7 @@ const objLoader = new OBJLoader();
             }
           });
 
-          root.position.copy(generatePosition(trees, 100, 10, 0));
+          root.position.copy(generatePosition(trees, 100, 10, -1));
 
           scene.add(root);
         });
