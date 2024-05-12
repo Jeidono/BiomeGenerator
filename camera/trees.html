@@ -38,7 +38,7 @@
 		
 	<script type="module">
 
-    import * as THREE from 'three';4
+    import * as THREE from 'three';
     import { OrbitControls } from './build/controls/OrbitControls.js';
     import { FirstPersonControls } from './build/controls/FirstPersonControls.js';
     import { OBJLoader } from './build/controls/OBJLoader.js';
@@ -121,8 +121,11 @@ const objLoader = new OBJLoader();
         (Math.random() - 0.5) * size
       );
 
-      var collides = trees.some(trees => position.distanceTo(trees.position) <= 
-      trees.geometry.parameters.width + gap);
+      var collides = trees.some(trees => {
+        var distance = position.distanceTo(tree.position);
+        var totalWidth = tree.userData.width / 2 + gap;
+        return distance <= totalWidth;
+      });
 
       if(!collides) {
         return position;
@@ -162,13 +165,23 @@ const objLoader = new OBJLoader();
         objLoader.load(treeModel, (root) => {
           var material = new THREE.MeshBasicMaterial({color: Math.random() * 0xffffff});
           material.wireframe = true;
+
+          //adjust gap
+          var bbox = new THREE.Box3().setFromObject(root);
+          var width = bbox.max.x - bbox.min.x;
+          root.userData.width = width;
+
           root.traverse((child) => {
             if(child instanceof THREE.Mesh) {
               child.material = material;
             }
           });
 
-          root.position.copy(generatePosition(trees, 100, 10, -1));
+          root.position.copy(generatePosition(trees, 100, 100, -2));  //trees, size, gap, yPosition
+
+          //Adjust y-position
+          var height = bbox.max.y - bbox.min.y;
+          root.position.y += height / 2;
 
           scene.add(root);
         });
