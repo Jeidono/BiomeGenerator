@@ -121,12 +121,8 @@ const objLoader = new OBJLoader();
         (Math.random() - 0.5) * size
       );
 
-      var collides = trees.some(tree => {
-        var distance = position.distanceTo(tree.position);
-        var totalWidth = tree.userData.width / 2 + gap;
-        return distance <= totalWidth;
-      });
-
+      var collides = trees.some(trees => position.distanceTo(trees.position) <= 
+      trees.geometry.parameters.width + gap);
       if(!collides) {
         return position;
       }
@@ -177,7 +173,7 @@ const objLoader = new OBJLoader();
             }
           });
 
-          root.position.copy(generatePosition(trees, 100, 100000000, -2));  //trees, size, gap, yPosition
+          root.position.copy(generatePosition(trees, 100, 100, -2));  //trees, size, gap, yPosition
 
           //Adjust y-position
           var height = bbox.max.y - bbox.min.y;
