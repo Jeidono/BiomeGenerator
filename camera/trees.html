@@ -188,6 +188,13 @@ const mtlLoader = new MTLLoader();
     }
     addTrees();
 
+     // Add the sky 
+    var skyGeometry = new THREE.SphereGeometry(500, 32, 32);
+    var skyMaterial = new THREE.MeshBasicMaterial({ color: 0x87ceeb, side: THREE.BackSide });
+    var sky = new THREE.Mesh(skyGeometry, skyMaterial);
+    scene.add(sky);
+
+
     </script>
   </body>
 </html>
