@@ -121,7 +121,7 @@ const objLoader = new OBJLoader();
         (Math.random() - 0.5) * size
       );
 
-      var collides = trees.some(trees => {
+      var collides = trees.some(tree => {
         var distance = position.distanceTo(tree.position);
         var totalWidth = tree.userData.width / 2 + gap;
         return distance <= totalWidth;
