@@ -104,7 +104,7 @@ const grassMaterial = new THREE.MeshBasicMaterial({ map: grassTexture, side: THR
 const grassplaneNum = 10;
 const numRows = 12;
 const numCols = 12;
-const planeSize = 10; // Size of each grass plane
+const planeSize = 10;
 
 for (let row = 0; row < numRows; row++) {
     for (let col = 0; col < numCols; col++) {
@@ -216,6 +216,14 @@ const objLoader = new OBJLoader();
       root.position.set(0, 20, 0);
       scene.add(root);
     });
+    const birdModel = '../../Assets/Animal/bird.obj';
+    objLoader.load(birdModel, (root) => {
+    root.scale.set(0.1, 0.1, 0.1);
+    root.position.set(-50, -2, 15); 
+    root.rotation.y = Math.PI / 2;
+
+    scene.add(root);
+});
 
 
     </script>
