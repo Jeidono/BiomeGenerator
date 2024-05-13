@@ -60,9 +60,9 @@
     document.body.appendChild(renderer.domElement );
   
 		//controls for camera
-		/*var controls = new FirstPersonControls(camera, renderer.domElement);
+		var controls = new FirstPersonControls(camera, renderer.domElement);
 
-		var MyUpdateLoop = function(){
+		/*var MyUpdateLoop = function(){
 			controls.update(1);
 			renderer.render(scene,camera);
 			requestAnimationFrame(MyUpdateLoop);
@@ -160,7 +160,8 @@ const mtlLoader = new MTLLoader();
         (Math.random() - 0.5) * size
       );
 
-      var collides = trees.some(trees => trees.geometry && position.distanceTo(trees.position) <=
+      var collides = trees.some(trees => trees.geometry 
+      && position.distanceTo(trees.position) <=
     trees.geometry.parameters.width + gap);
       if(!collides) {
         return position;
@@ -175,7 +176,8 @@ const mtlLoader = new MTLLoader();
     return new Promise((resolve, reject) => {
       mtlLoader.load(treeMTL, (treeMaterial) => {
         treeMaterial.preload();
-        objLoader.setMaterials(treeMaterial).load(treeModel, (root) => {
+        objLoader.setMaterials(treeMaterial).load(treeModel, 
+        (root) => {
           resolve(root);
         }, undefined, reject);
       });
