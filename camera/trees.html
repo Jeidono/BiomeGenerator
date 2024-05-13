@@ -96,8 +96,15 @@
 
 //create light
 var light = new THREE.PointLight(0xffffff, 1, 1000);
-light.position.set(0, 0, 0);
+light.position.set(100, 50, 100);
+light.rotation.set(100,0,100);
 scene.add(light);
+
+//adding the Sun
+const geometry = new THREE.SphereGeometry( 15, 32, 16 ); 
+const material = new THREE.MeshBasicMaterial( { color: 0xffff00 } ); 
+const sphere = new THREE.Mesh( geometry, material ); scene.add( sphere );
+sphere.position.set(100, 50, 100); // Adjust position as needed
 
 
 // Create a grass plane
@@ -224,12 +231,6 @@ const mtlLoader = new MTLLoader();
     var skyMaterial = new THREE.MeshBasicMaterial({ color: 0x87ceeb, side: THREE.BackSide });
     var sky = new THREE.Mesh(skyGeometry, skyMaterial);
     scene.add(sky);
-
-    //adding the Sun
-    const geometry = new THREE.SphereGeometry( 15, 32, 16 ); 
-    const material = new THREE.MeshBasicMaterial( { color: 0xffff00 } ); 
-    const sphere = new THREE.Mesh( geometry, material ); scene.add( sphere );
-    sphere.position.set(0, 50, 0); // Adjust position as needed
 
 
     // adding the clouds
