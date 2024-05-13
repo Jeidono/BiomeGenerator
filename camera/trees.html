@@ -62,20 +62,20 @@
 		//controls for camera
 		var controls = new FirstPersonControls(camera, renderer.domElement);
 
-		/*var MyUpdateLoop = function(){
+		var MyUpdateLoop = function(){
 			controls.update(1);
 			renderer.render(scene,camera);
 			requestAnimationFrame(MyUpdateLoop);
-		};*/
+		};
 
-  var controls = new OrbitControls( camera, renderer.domElement );
+  /*var controls = new OrbitControls( camera, renderer.domElement );
   var MyUpdateLoop = function ( )
   {
     renderer.render(scene,camera);
     controls.update();
     requestAnimationFrame(MyUpdateLoop);
 
-  };
+  };*/
 
   requestAnimationFrame(MyUpdateLoop);
 
