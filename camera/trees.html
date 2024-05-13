@@ -208,24 +208,24 @@ const mtlLoader = new MTLLoader();
 
     // adding the clouds
     const cloudModel = '../../Assets/cloud.obj';
-    objLoader.load (cloudModel, (root) => {
+    objLoader.load (cloudModel, (cloud) => {
       const cloudMaterial = new THREE.MeshBasicMaterial({color: 0xffffff});
-      root.traverse((child)=> {
+      cloud.traverse((child)=> {
         if (child instanceof THREE.Mesh){
           child.material = cloudMaterial;
         }
       })
-      root.scale.set(50, 50, 100);
-      root.position.set(0, 20, 0);
-      scene.add(root);
+      cloud.scale.set(50, 50, 100);
+      cloud.position.set(0, 20, 0);
+      scene.add(cloud);
     });
     const birdModel = '../../Assets/Animal/bird.obj';
-    objLoader.load(birdModel, (root) => {
-    root.scale.set(0.1, 0.1, 0.1);
-    root.position.set(-50, -2, 15); 
-    root.rotation.y = Math.PI / 2;
+    objLoader.load(birdModel, (bird) => {
+    bird.scale.set(0.1, 0.1, 0.1);
+    bird.position.set(-50, -2, 15); 
+    bird.rotation.y = Math.PI / 2;
 
-    scene.add(root);
+    scene.add(bird);
 });
 
 
