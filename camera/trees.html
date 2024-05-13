@@ -91,8 +91,6 @@
 
   window.addEventListener('resize', MyResize);
 
-  var trees = [];
-  var n = 300;
 
 //create light
 var light = new THREE.SpotLight(0xE6E6C7, 1, 1000);
@@ -143,6 +141,10 @@ for (let row = 0; row < numRows; row++) {
 
 
 //loading in different tree types
+
+var trees = [];
+var n = 300;
+
 const objLoader = new OBJLoader();
 const mtlLoader = new MTLLoader();
 
@@ -195,25 +197,25 @@ const mtlLoader = new MTLLoader();
 
         if (rand < 1/7) {
           treeModel = '../../Assets/Trees/bareTreeWithHole.obj';
-          treeMTL = '../../Assets/Trees/baretreeWithHole.obj.mtl';
+          treeMTL = '../../Assets/Trees/material1.mtl';
         } else if (rand < 2/7) {
           treeModel = '../../Assets/Trees/chunkyTree.obj';
-          treeMTL = '../../Assets/Trees/chunkyTree.obj.mtl';
+          treeMTL = '../../Assets/Trees/material2.mtl';
         } else if(rand < 3/7){
           treeModel = '../../Assets/Trees/shortNoLeaves.obj';
-          treeMTL = '../../Assets/Trees/shortNoLeaves.obj.mtl';
+          treeMTL = '../../Assets/Trees/material1.mtl';
         }else if(rand < 4/7){
           treeModel = '../../Assets/Trees/skinnyShortTree.obj';
-          treeMTL = '../../Assets/Trees/skinnyShortTree.obj.mtl';
+          treeMTL = '../../Assets/Trees/material2.mtl';
         }else if(rand < 5/7){
           treeModel = '../../Assets/Trees/skinnyTallTree.obj';
-          treeMTL = '../../Assets/Trees/skinnyTallTree.obj.mtl';
+          treeMTL = '../../Assets/Trees/material2.mtl';
         }else if(rand < 6/7){
           treeModel = '../../Assets/Trees/tallTree.obj';
-          treeMTL = '../../Assets/Trees/tallTree.obj.mtl';
+          treeMTL = '../../Assets/Trees/material2.mtl';
         }else{
           treeModel = '../../Assets/Trees/tallNoLeaves.obj';
-          treeMTL = '../../Assets/Trees/tallNoLeaves.obj.mtl';
+          treeMTL = '../../Assets/Trees/material1.mtl';
         }
 
         loadTreeModel(treeModel, treeMTL).then((root) =>{
