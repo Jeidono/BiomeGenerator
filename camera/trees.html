@@ -78,10 +78,7 @@
 
   };
 
-
   requestAnimationFrame(MyUpdateLoop);
-
-  
 
   var MyResize = function ( )
   {
@@ -98,7 +95,7 @@
   var trees = [];
   var n = 300;
 
-  // Create a grass plane
+// Create a grass plane
 const grassTexture = new THREE.TextureLoader().load('../../Assets/grass.jpg');
 const grassGeometry = new THREE.PlaneGeometry(10, 10);
 const grassMaterial = new THREE.MeshBasicMaterial({ map: grassTexture, side: THREE.DoubleSide });
@@ -154,22 +151,30 @@ const mtlLoader = new MTLLoader();
       trees = [];
       for(var i = 0; i < n; i++){
         var treeModel;
+        var treeMTL;
         var rand = Math.random();
 
         if (rand < 0.2) {
           treeModel = '../../Assets/Trees/bareTreeWithHole.obj';
+          treeMTL = '../../Assets/Trees/baretreeWithHold.obj.mtl';
         } else if (rand < 0.6) {
           treeModel = '../../Assets/Trees/chunkyTree.obj';
+          treeMTL = '../../Assets/Trees/chunkyTree.obj.mtl';
         } else if(rand < 0.15){
           treeModel = '../../Assets/Trees/shortNoLeaves.obj';
+          treeMTL = '../../Assets/Trees/shortNoLeaves.obj.mtl';
         }else if(rand < 0.6){
           treeModel = '../../Assets/Trees/skinnyShortTree.obj';
+          treeMTL = '../../Assets/Trees/skinnyShortTree.obj.mtl';
         }else if(rand < 0.6){
           treeModel = '../../Assets/Trees/skinnyTallTree.obj';
+          treeMTL = '../../Assets/Trees/skinnyTallTree.obj.mtl';
         }else if(rand < 0.9){
           treeModel = '../../Assets/Trees/tallTree.obj';
+          treeMTL = '../../Assets/Trees/tallTree.obj.mtl';
         }else{
           treeModel = '../../Assets/Trees/tallNoLeaves.obj';
+          treeMTL = '../../Assets/Trees/tallNoLeaves.obj.mtl';
         }
 
         objLoader.load(treeModel, (root) => {
