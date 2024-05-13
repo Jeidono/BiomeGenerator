@@ -44,6 +44,7 @@
     import { OBJLoader } from './build/controls/OBJLoader.js';
     import { GUI } from './build/controls/lil-gui.module.min.js';
     import { MTLLoader } from './build/controls/MTLLoader.js';
+    import {PLYLoader} from './build/controls/PLYLoader.js';
 
     //creating scene
     var scene = new THREE.Scene( );
@@ -60,22 +61,22 @@
     document.body.appendChild(renderer.domElement );
   
 		//controls for camera
-		var controls = new FirstPersonControls(camera, renderer.domElement);
+		// var controls = new FirstPersonControls(camera, renderer.domElement);
 
-		var MyUpdateLoop = function(){
-			controls.update(1);
-			renderer.render(scene,camera);
-			requestAnimationFrame(MyUpdateLoop);
-		};
+		// var MyUpdateLoop = function(){
+		// 	controls.update(1);
+		// 	renderer.render(scene,camera);
+		// 	requestAnimationFrame(MyUpdateLoop);
+		// };
 
-  /*var controls = new OrbitControls( camera, renderer.domElement );
+  var controls = new OrbitControls( camera, renderer.domElement );
   var MyUpdateLoop = function ( )
   {
     renderer.render(scene,camera);
     controls.update();
     requestAnimationFrame(MyUpdateLoop);
 
-  };*/
+  };
 
   requestAnimationFrame(MyUpdateLoop);
 
@@ -147,6 +148,7 @@ var n = 300;
 
 const objLoader = new OBJLoader();
 const mtlLoader = new MTLLoader();
+const plyLoader = new PLYLoader();
 
   //generate position for trees
   function generatePosition(trees, size, gap, yPosition){
@@ -263,14 +265,41 @@ const mtlLoader = new MTLLoader();
       cloud.position.set(0, 20, 0);
       scene.add(cloud);
     });
+    
+    // adding the animals
     const birdModel = '../../Assets/Animal/bird.obj';
     objLoader.load(birdModel, (bird) => {
-    bird.scale.set(0.1, 0.1, 0.1);
+    bird.scale.set(0.05, 0.05, 0.05);
     bird.position.set(-50, -2, 15); 
     bird.rotation.y = Math.PI / 2;
 
     scene.add(bird);
 });
+    const catModel = '../../Assets/Animal/cat.obj';
+    objLoader.load(catModel, (cat) => {
+    cat.scale.set(0.04, 0.04, 0.04);
+    cat.position.set(-50, -2, 20); 
+    cat.rotation.x = -Math.PI / 2;
+
+    scene.add(cat);
+});
+    const squirrelModel = '../../Assets/Animal/squirrel.obj';
+    objLoader.load(squirrelModel, (squirrel) => {
+    squirrel.scale.set(0.005, 0.005, 0.005);
+    squirrel.position.set(-50, -2, 18); 
+
+    scene.add(squirrel);
+});
+
+    const chickModel = '../../Assets/Animal/chick.obj';
+    objLoader.load(chickModel, (chick) => {
+    chick.scale.set(0.5, 0.5, 0.5);
+    chick.position.set(-50, -2, 17); 
+
+    scene.add(chick);
+});
+
+
 
 
     </script>
