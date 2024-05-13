@@ -94,8 +94,8 @@
   var trees = [];
   var n = 300;
 
-  //create light
-  var light = new THREE.PointLight(0xffffff, 1, 1000);
+//create light
+var light = new THREE.PointLight(0xffffff, 1, 1000);
 light.position.set(0, 0, 0);
 scene.add(light);
 
@@ -197,6 +197,9 @@ const mtlLoader = new MTLLoader();
         }
 
         loadTreeModel(treeModel, treeMTL).then((root) =>{
+
+          //adjust rotation
+          root.rotation.y = Math.random() *  Math.PI;
 
           //adjust gap
           var bbox = new THREE.Box3().setFromObject(root);
