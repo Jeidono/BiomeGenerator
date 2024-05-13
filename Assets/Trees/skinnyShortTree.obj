@@ -174,7 +174,7 @@ v -0.1732106 0.0634265 0.0540665
 # 80 vertices, 0 vertices normals
 
 
-usemtl material_0
+usemtl material_2
 vt 0.1250000 2.3036571
 vt 0.0000000 2.3036571
 f 63/1/63 26/2/26 50/2/50

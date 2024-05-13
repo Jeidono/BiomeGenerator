@@ -43,7 +43,7 @@
     import { FirstPersonControls } from './build/controls/FirstPersonControls.js';
     import { OBJLoader } from './build/controls/OBJLoader.js';
     import { GUI } from './build/controls/lil-gui.module.min.js';
-    import {MTLLoader } from './build/controls/MTLLoader.js';
+    import { MTLLoader } from './build/controls/MTLLoader.js';
 
     //creating scene
     var scene = new THREE.Scene( );
@@ -249,7 +249,7 @@ const mtlLoader = new MTLLoader();
     // adding the clouds
     const cloudModel = '../../Assets/cloud.obj';
     objLoader.load (cloudModel, (cloud) => {
-      const cloudMaterial = new THREE.MeshBasicMaterial({color: 0xffffff});
+      const cloudMaterial = new THREE.MeshBasicMaterial({color: 0xffffff, transparent: true, opacity: 0.6});
       cloud.traverse((child)=> {
         if (child instanceof THREE.Mesh){
           child.material = cloudMaterial;
