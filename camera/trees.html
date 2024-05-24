@@ -299,6 +299,46 @@ const plyLoader = new PLYLoader();
     scene.add(chick);
 });
 
+const gridSize = 100;
+const path = [];
+let currentX = 0;
+let currentY = 0;
+
+const targetX = gridSize - 1;
+const targetY = gridSize - 1;
+
+path.push({ x: currentX, y: currentY });
+
+while (currentX !== targetX || currentY !== targetY) {
+    const directions = [];
+
+    if (currentX < targetX) directions.push({ x: currentX + 1, y: currentY });
+    if (currentX > 0) directions.push({ x: currentX - 1, y: currentY });
+    if (currentY < targetY) directions.push({ x: currentX, y: currentY + 1 });
+    if (currentY > 0) directions.push({ x: currentX, y: currentY - 1 });
+
+    const nextStep = directions[Math.floor(Math.random() * directions.length)];
+    currentX = nextStep.x;
+    currentY = nextStep.y;
+
+    path.push(nextStep);
+}
+
+const pathMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+
+path.forEach(step => {
+    const pathCube = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), pathMaterial);
+    pathCube.position.set(step.x - gridSize / 2, 0.5, step.y - gridSize / 2);
+    scene.add(pathCube);
+});
+
+function animate() {
+    requestAnimationFrame(animate);
+    renderer.render(scene, camera);
+}
+
+animate();
+
 
 
 
