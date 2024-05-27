@@ -351,80 +351,62 @@ const plyLoader = new PLYLoader();
       scene.add(cloud);
     });
     
-    // adding the animals
-    const birdModel = '../../Assets/Animal/bird.obj';
-    objLoader.load(birdModel, (bird) => {
-    bird.scale.set(0.05, 0.05, 0.05);
-    bird.position.set(-50, -2, 15); 
-    bird.rotation.y = Math.PI / 2;
+ 
+      // Function to generate random positions for animals
+      function generateAnimalPosition(size, yPosition) {
+        return new THREE.Vector3(
+          (Math.random() - 0.5) * size,
+          yPosition,
+          (Math.random() - 0.5) * size
+        );
+      }
 
-    scene.add(bird);
-});
-    const catModel = '../../Assets/Animal/cat.obj';
-    objLoader.load(catModel, (cat) => {
-    cat.scale.set(0.04, 0.04, 0.04);
-    cat.position.set(-50, -2, 20); 
-    cat.rotation.x = -Math.PI / 2;
+      // Load animal models and place them randomly
+      function addAnimalModel(animalModel, scale, yPosition) {
+        objLoader.load(animalModel, (animal) => {
+          animal.scale.set(scale, scale, scale);
+          animal.position.copy(generateAnimalPosition(100, yPosition));
+          scene.add(animal);
+        });
+      }
 
-    scene.add(cat);
-});
-    const squirrelModel = '../../Assets/Animal/squirrel.obj';
-    objLoader.load(squirrelModel, (squirrel) => {
-    squirrel.scale.set(0.005, 0.005, 0.005);
-    squirrel.position.set(-50, -2, 18); 
+      // Add different animals to the scene
+      const birdModel = '../../Assets/Animal/bird.obj';
+      const catModel = '../../Assets/Animal/cat.obj';
+      const squirrelModel = '../../Assets/Animal/squirrel.obj';
+      const chickModel = '../../Assets/Animal/chick.obj';
 
-    scene.add(squirrel);
-});
+      addAnimalModel(birdModel, 0.05, -2);
+      addAnimalModel(catModel, 0.04, -2);
+      addAnimalModel(squirrelModel, 0.005, -2);
+      addAnimalModel(chickModel, 0.5, -2);
 
-    const chickModel = '../../Assets/Animal/chick.obj';
-    objLoader.load(chickModel, (chick) => {
-    chick.scale.set(0.5, 0.5, 0.5);
-    chick.position.set(-50, -2, 17); 
+      //Path rendering
+      function generateRandomCircularPath(radius, segments) {
+            const points = [];
+            for (let i = 0; i <= segments; i++) {
+                const angle = (i / segments) * Math.PI * 2;
+                const x = Math.cos(angle) * (radius + Math.random() * 5); // Adding some randomness
+                const z = Math.sin(angle) * (radius + Math.random() * 5); // Adding some randomness
+                points.push(new THREE.Vector3(x, -2, z));
+            }
+            return points;
+        }
 
-    scene.add(chick);
-});
+        const radius = 30;
+        const segments = 50;
+        const pathPoints = generateRandomCircularPath(radius, segments);
 
-//Path rendering
+    const pathGeometry = new THREE.BufferGeometry().setFromPoints(pathPoints);
+        const pathMaterial = new THREE.LineBasicMaterial({ color: 0xff0000 });
+        const pathLine = new THREE.Line(pathGeometry, pathMaterial);
+        scene.add(pathLine);
 
-/*const gridSize = 100;
-const path = [];
-let currentX = 0;
-let currentY = 0;
-
-const targetX = gridSize - 1;
-const targetY = gridSize - 1;
-
-path.push({ x: currentX, y: currentY });
-
-while (currentX !== targetX || currentY !== targetY) {
-    const directions = [];
-
-    if (currentX < targetX) directions.push({ x: currentX + 1, y: currentY });
-    if (currentX > 0) directions.push({ x: currentX - 1, y: currentY });
-    if (currentY < targetY) directions.push({ x: currentX, y: currentY + 1 });
-    if (currentY > 0) directions.push({ x: currentX, y: currentY - 1 });
-
-    const nextStep = directions[Math.floor(Math.random() * directions.length)];
-    currentX = nextStep.x;
-    currentY = nextStep.y;
-
-    path.push(nextStep);
-}
-
-const pathMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-
-path.forEach(step => {
-    const pathCube = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), pathMaterial);
-    pathCube.position.set(step.x - gridSize / 2, 0.5, step.y - gridSize / 2);
-    scene.add(pathCube);
-});
-
-function animate() {
-    requestAnimationFrame(animate);
-    renderer.render(scene, camera);
-}
-
-animate();*/
+        function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+        }
+        animate();
 
 
 
