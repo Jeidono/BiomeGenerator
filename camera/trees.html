@@ -105,7 +105,7 @@ light.target = targetObject;
 scene.add(light);
 
 //adding the Sun
-const geometry = new THREE.SphereGeometry( 15, 32, 16 ); 
+/*const geometry = new THREE.SphereGeometry( 15, 32, 16 ); 
 const material = new THREE.MeshStandardMaterial( { 
   color: 0xE6E6C7 ,
   emissive: 0xFBDE00,
@@ -116,7 +116,7 @@ const material = new THREE.MeshStandardMaterial( {
 
 const sun = new THREE.Mesh( geometry, material ); 
 scene.add( sun );
-sun.position.set(100, 50, 100); // Adjust position as needed
+sun.position.set(100, 50, 100); // Adjust position as needed*/
 
 
 // Create a grass plane
@@ -144,7 +144,7 @@ for (let row = 0; row < numRows; row++) {
 //loading in different tree types
 
 var trees = [];
-var n = 300;
+var n = 200;
 
 const objLoader = new OBJLoader();
 const mtlLoader = new MTLLoader();
@@ -199,19 +199,20 @@ const plyLoader = new PLYLoader();
         var treeMTL;
         var rand = Math.random();
 
-        if (rand < 1/7) {
-          treeModel = '../../Assets/Trees/bareTreeWithHole.obj';
-          treeMTL = '../../Assets/Trees/material1.mtl';
-        } else if (rand < 2/7) {
-          treeModel = '../../Assets/Trees/chunkyTree.obj';
-          treeMTL = '../../Assets/Trees/material2.mtl';
-        } else if(rand < 3/7){
-          treeModel = '../../Assets/Trees/shortNoLeaves.obj';
-          treeMTL = '../../Assets/Trees/material1.mtl';
-        }else if(rand < 4/7){
-          treeModel = '../../Assets/Trees/skinnyShortTree.obj';
-          treeMTL = '../../Assets/Trees/material2.mtl';
-        }else if(rand < 5/7){
+        if (rand < 1/4) {
+          treeModel = '../../Assets/Trees/Tree.obj';
+          treeMTL = '../../Assets/Trees/Tree2.obj.mtl';
+        } else if(rand < 2/4){
+          treeModel = '../../Assets/Trees/Tree2.obj';
+          treeMTL = '../../Assets/Trees/Tree2.obj.mtl';
+        }
+         else if(rand<3/4) {
+          treeModel = '../../Assets/Trees/tree3.obj';
+          treeMTL = '../../Assets/Trees/Tree2.obj.mtl';
+        }else{
+          treeModel = '../../Assets/Trees/appleTree.obj';
+          treeMTL = '../../Assets/Trees/Tree2.obj.mtl';
+        }/*else if(rand < 5/7){
           treeModel = '../../Assets/Trees/skinnyTallTree.obj';
           treeMTL = '../../Assets/Trees/material2.mtl';
         }else if(rand < 6/7){
@@ -220,7 +221,7 @@ const plyLoader = new PLYLoader();
         }else{
           treeModel = '../../Assets/Trees/tallNoLeaves.obj';
           treeMTL = '../../Assets/Trees/material1.mtl';
-        }
+        }*/
 
         loadTreeModel(treeModel, treeMTL).then((root) =>{
 
@@ -232,7 +233,7 @@ const plyLoader = new PLYLoader();
           var width = bbox.max.x - bbox.min.x;
           root.userData.width = width;
 
-          root.position.copy(generatePosition(trees, 100, 100, -2));  //trees, size, gap, yPosition
+          root.position.copy(generatePosition(trees, 100, 100, -6.5));  //trees, size, gap, yPosition
           //Adjust y-position
           var height = bbox.max.y - bbox.min.y;
           root.position.y += height / 2;
@@ -262,7 +263,7 @@ const plyLoader = new PLYLoader();
         }
       })
       cloud.scale.set(50, 50, 100);
-      cloud.position.set(0, 20, 0);
+      cloud.position.set(0, 50, 0);
       scene.add(cloud);
     });
     
@@ -299,9 +300,9 @@ const plyLoader = new PLYLoader();
     scene.add(chick);
 });
 
-//path
+//Path rendering
 
-const gridSize = 100;
+/*const gridSize = 100;
 const path = [];
 let currentX = 0;
 let currentY = 0;
@@ -339,7 +340,8 @@ function animate() {
     renderer.render(scene, camera);
 }
 
-animate();
+animate();*/
+
 
 
 
