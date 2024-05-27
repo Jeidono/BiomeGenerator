@@ -318,38 +318,35 @@ const plyLoader = new PLYLoader();
       scene.add(cloud);
     });
     
-    // adding the animals
-    const birdModel = '../../Assets/Animal/bird.obj';
-    objLoader.load(birdModel, (bird) => {
-    bird.scale.set(0.05, 0.05, 0.05);
-    bird.position.set(-50, -2, 15); 
-    bird.rotation.y = Math.PI / 2;
+ 
+      // Function to generate random positions for animals
+      function generateAnimalPosition(size, yPosition) {
+        return new THREE.Vector3(
+          (Math.random() - 0.5) * size,
+          yPosition,
+          (Math.random() - 0.5) * size
+        );
+      }
 
-    scene.add(bird);
-});
-    const catModel = '../../Assets/Animal/cat.obj';
-    objLoader.load(catModel, (cat) => {
-    cat.scale.set(0.04, 0.04, 0.04);
-    cat.position.set(-50, -2, 20); 
-    cat.rotation.x = -Math.PI / 2;
+      // Load animal models and place them randomly
+      function addAnimalModel(animalModel, scale, yPosition) {
+        objLoader.load(animalModel, (animal) => {
+          animal.scale.set(scale, scale, scale);
+          animal.position.copy(generateAnimalPosition(100, yPosition));
+          scene.add(animal);
+        });
+      }
 
-    scene.add(cat);
-});
-    const squirrelModel = '../../Assets/Animal/squirrel.obj';
-    objLoader.load(squirrelModel, (squirrel) => {
-    squirrel.scale.set(0.005, 0.005, 0.005);
-    squirrel.position.set(-50, -2, 18); 
+      // Add different animals to the scene
+      const birdModel = '../../Assets/Animal/bird.obj';
+      const catModel = '../../Assets/Animal/cat.obj';
+      const squirrelModel = '../../Assets/Animal/squirrel.obj';
+      const chickModel = '../../Assets/Animal/chick.obj';
 
-    scene.add(squirrel);
-});
-
-    const chickModel = '../../Assets/Animal/chick.obj';
-    objLoader.load(chickModel, (chick) => {
-    chick.scale.set(0.5, 0.5, 0.5);
-    chick.position.set(-50, -2, 17); 
-
-    scene.add(chick);
-});
+      addAnimalModel(birdModel, 0.05, -2);
+      addAnimalModel(catModel, 0.04, -2);
+      addAnimalModel(squirrelModel, 0.005, -2);
+      addAnimalModel(chickModel, 0.5, -2);
 
 //Path rendering
 
