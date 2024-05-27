@@ -45,6 +45,7 @@
     import { GUI } from './build/controls/lil-gui.module.min.js';
     import { MTLLoader } from './build/controls/MTLLoader.js';
     import {PLYLoader} from './build/controls/PLYLoader.js';
+    import { Lensflare, LensflareElement } from './build/controls/Lensflare.js';
 
     //creating scene
     var scene = new THREE.Scene( );
@@ -95,12 +96,7 @@
 
 //create light
 var light = new THREE.SpotLight(0xE6E6C7, 1, 1000);
-light.position.set(100, 50, 100);
-
-var targetObject = new THREE.Object3D();
-targetObject.position.set(0,0,0);
-scene.add(targetObject);
-light.target = targetObject;
+light.position.set(-50, 75, -50);
 
 scene.add(light);
 
@@ -109,14 +105,51 @@ const geometry = new THREE.SphereGeometry( 15, 32, 16 );
 const material = new THREE.MeshStandardMaterial( { 
   color: 0xE6E6C7 ,
   emissive: 0xFBDE00,
-  emissiveIntensity: 1,
-  metalness: 1,
-  roughness: 0
-} ); 
+  emissiveIntensity: 1
 
+} );
 const sun = new THREE.Mesh( geometry, material ); 
 scene.add( sun );
-sun.position.set(100, 50, 100); // Adjust position as needed*/
+sun.position.set(-50, 75, -50); // Adjust position as needed
+
+// Creating lighting affect for sun
+var canvas = document.createElement('canvas');
+canvas.width = 365;
+canvas.height = 365;
+
+var context = canvas.getContext('2d');
+
+var gradient = context.createRadialGradient(
+    canvas.width / 2,
+    canvas.height / 2,
+    0,
+    canvas.width / 2,
+    canvas.height / 2,
+    canvas.width / 2
+);
+gradient.addColorStop(0, 'rgba(255, 165, 255, 1)');
+gradient.addColorStop(0.1, 'rgba(255, 255, 255, 0.5)');
+gradient.addColorStop(0.2, 'rgba(255, 255, 255, 0.2)');
+gradient.addColorStop(0.4, 'rgba(255, 255, 0, 0.05)');
+gradient.addColorStop(1, 'rgba(255, 165, 0, 0)');
+
+context.fillStyle = gradient;
+context.fillRect(0, 0, canvas.width, canvas.height);
+
+var texture = new THREE.Texture(canvas);
+texture.needsUpdate = true;
+
+var sunMaterial = new THREE.SpriteMaterial({
+    map: texture, 
+    transparent: true, 
+    blending: THREE.AdditiveBlending
+});
+
+var sprite = new THREE.Sprite(sunMaterial);
+sprite.scale.set(70, 70, 1); // Adjust size as needed
+scene.add(sprite);
+sprite.position.copy(sun.position);
+
 
 
 // Create a grass plane
@@ -127,6 +160,7 @@ const grassplaneNum = 10;
 const numRows = 12;
 const numCols = 12;
 const planeSize = 10;
+
 
 for (let row = 0; row < numRows; row++) {
     for (let col = 0; col < numCols; col++) {
@@ -256,17 +290,16 @@ const plyLoader = new PLYLoader();
         var rand = Math.random();
 
         if (rand < 1/4) {
-          bushModel = '../../Assets/Trees/Tree.obj';
+          bushModel = '../../Assets/Bushes and Foilage/Bush1.obj';
           bushMTL = '../../Assets/Trees/Tree2.obj.mtl';
         } else if(rand < 2/4){
-          bushModel = '../../Assets/Trees/Tree2.obj';
+          bushModel = '../../Assets/Bushes and Foilage/Bushs2.obj';
           bushMTL = '../../Assets/Trees/Tree2.obj.mtl';
-        }
-         else if(rand < 3/4) {
-          bushModel = '../../Assets/Trees/tree3.obj';
+        } else if(rand < 3/4) {
+          bushModel = '../../Assets/Bushes and Foilage/treeStump.obj';
           bushMTL = '../../Assets/Trees/Tree2.obj.mtl';
         }else{
-          bushModel = '../../Assets/Trees/appleTree.obj';
+          bushModel = '../../Assets/Bushes and Foilage/rocks.obj';
           bushMTL = '../../Assets/Trees/Tree2.obj.mtl';
         }
 
@@ -280,7 +313,7 @@ const plyLoader = new PLYLoader();
           var width = bbox.max.x - bbox.min.x;
           root.userData.width = width;
 
-          root.position.copy(generatePosition(bushes, 100, 100, 2));  //bushes, size, gap, yPosition
+          root.position.copy(generatePosition(bushes, 100, 100, -2.5));  //bushes, size, gap, yPosition
           //Adjust y-position
           var height = bbox.max.y - bbox.min.y;
           root.position.y += height / 2;
