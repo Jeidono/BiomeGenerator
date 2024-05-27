@@ -105,7 +105,7 @@ light.target = targetObject;
 scene.add(light);
 
 //adding the Sun
-/*const geometry = new THREE.SphereGeometry( 15, 32, 16 ); 
+const geometry = new THREE.SphereGeometry( 15, 32, 16 ); 
 const material = new THREE.MeshStandardMaterial( { 
   color: 0xE6E6C7 ,
   emissive: 0xFBDE00,
@@ -142,7 +142,6 @@ for (let row = 0; row < numRows; row++) {
 
 
 //loading in different tree types
-
 var trees = [];
 var n = 200;
 
@@ -206,22 +205,13 @@ const plyLoader = new PLYLoader();
           treeModel = '../../Assets/Trees/Tree2.obj';
           treeMTL = '../../Assets/Trees/Tree2.obj.mtl';
         }
-         else if(rand<3/4) {
+         else if(rand < 3/4) {
           treeModel = '../../Assets/Trees/tree3.obj';
           treeMTL = '../../Assets/Trees/Tree2.obj.mtl';
         }else{
           treeModel = '../../Assets/Trees/appleTree.obj';
           treeMTL = '../../Assets/Trees/Tree2.obj.mtl';
-        }/*else if(rand < 5/7){
-          treeModel = '../../Assets/Trees/skinnyTallTree.obj';
-          treeMTL = '../../Assets/Trees/material2.mtl';
-        }else if(rand < 6/7){
-          treeModel = '../../Assets/Trees/tallTree.obj';
-          treeMTL = '../../Assets/Trees/material2.mtl';
-        }else{
-          treeModel = '../../Assets/Trees/tallNoLeaves.obj';
-          treeMTL = '../../Assets/Trees/material1.mtl';
-        }*/
+        }
 
         loadTreeModel(treeModel, treeMTL).then((root) =>{
 
@@ -246,7 +236,68 @@ const plyLoader = new PLYLoader();
     }
     addTrees();
 
-     // Add the sky 
+
+
+
+    //add bushes and other decorative assets into the scene
+    var bushes = [];
+    var a = 50;
+
+    function addBushes()
+    {
+      for(i = 0; i < bushes.length; i++){
+        scene.remove(bushes[i]);
+      }
+      bushes = [];
+
+      for(var i = 0; i < a; i++){
+        var bushModel;
+        var bushMTL;
+        var rand = Math.random();
+
+        if (rand < 1/4) {
+          bushModel = '../../Assets/Trees/Tree.obj';
+          bushMTL = '../../Assets/Trees/Tree2.obj.mtl';
+        } else if(rand < 2/4){
+          bushModel = '../../Assets/Trees/Tree2.obj';
+          bushMTL = '../../Assets/Trees/Tree2.obj.mtl';
+        }
+         else if(rand < 3/4) {
+          bushModel = '../../Assets/Trees/tree3.obj';
+          bushMTL = '../../Assets/Trees/Tree2.obj.mtl';
+        }else{
+          bushModel = '../../Assets/Trees/appleTree.obj';
+          bushMTL = '../../Assets/Trees/Tree2.obj.mtl';
+        }
+
+        loadTreeModel(bushModel, bushMTL).then((root) =>{
+
+          //adjust rotation
+          root.rotation.y = Math.random() *  Math.PI;
+
+          //adjust gap
+          var bbox = new THREE.Box3().setFromObject(root);
+          var width = bbox.max.x - bbox.min.x;
+          root.userData.width = width;
+
+          root.position.copy(generatePosition(bushes, 100, 100, 2));  //bushes, size, gap, yPosition
+          //Adjust y-position
+          var height = bbox.max.y - bbox.min.y;
+          root.position.y += height / 2;
+          
+          scene.add(root);
+          bushes.push(root);
+        });
+
+      }
+    }
+
+    addBushes();
+
+
+
+
+    // Add the sky 
     var skyGeometry = new THREE.SphereGeometry(500, 32, 32);
     var skyMaterial = new THREE.MeshBasicMaterial({ color: 0x87ceeb, side: THREE.BackSide });
     var sky = new THREE.Mesh(skyGeometry, skyMaterial);
