@@ -289,18 +289,21 @@ const plyLoader = new PLYLoader();
         var bushMTL;
         var rand = Math.random();
 
-        if (rand < 1/4) {
+        if (rand < 1/5) {
           bushModel = '../../Assets/Bushes and Foilage/Bush1.obj';
           bushMTL = '../../Assets/Trees/Tree2.obj.mtl';
-        } else if(rand < 2/4){
+        } else if(rand < 2/5){
           bushModel = '../../Assets/Bushes and Foilage/Bushs2.obj';
           bushMTL = '../../Assets/Trees/Tree2.obj.mtl';
-        } else if(rand < 3/4) {
+        } else if(rand < 3/5) {
           bushModel = '../../Assets/Bushes and Foilage/treeStump.obj';
           bushMTL = '../../Assets/Trees/Tree2.obj.mtl';
-        }else{
+        }else if(rand < 4/5){
           bushModel = '../../Assets/Bushes and Foilage/rocks.obj';
           bushMTL = '../../Assets/Trees/Tree2.obj.mtl';
+        }else{
+          bushModel = '../../Assets/Bushes and Foilage/log.obj';
+          bushMTL = '../../Assets/Trees/Tree2.obj.mtl';      
         }
 
         loadTreeModel(bushModel, bushMTL).then((root) =>{
@@ -338,7 +341,7 @@ const plyLoader = new PLYLoader();
 
 
     // adding the clouds
-    const cloudModel = '../../Assets/cloud.obj';
+    /*const cloudModel = '../../Assets/cloud.obj';
     objLoader.load (cloudModel, (cloud) => {
       const cloudMaterial = new THREE.MeshBasicMaterial({color: 0xffffff, transparent: true, opacity: 0.6});
       cloud.traverse((child)=> {
@@ -349,7 +352,7 @@ const plyLoader = new PLYLoader();
       cloud.scale.set(50, 50, 100);
       cloud.position.set(0, 50, 0);
       scene.add(cloud);
-    });
+    });*/
     
  
       // Function to generate random positions for animals
