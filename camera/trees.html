@@ -406,7 +406,7 @@ const plyLoader = new PLYLoader();
           var width = bbox.max.x - bbox.min.x;
           root.userData.width = width;
 
-          root.position.copy(generatePosition(bushes, 100, 0, -2.4));  //bushes, size, gap, yPosition
+          root.position.copy(generatePosition(grass, 100, 1, -2.4));  //bushes, size, gap, yPosition
           //Adjust y-position
           var height = bbox.max.y - bbox.min.y;
           root.position.y += height / 2;
@@ -431,6 +431,66 @@ const plyLoader = new PLYLoader();
 
 
     // adding the clouds
+    var clouds = [];
+    var c = 100;
+
+    function addClouds()
+    {
+      for(i = 0; i < clouds.length; i++){
+        scene.remove(clouds[i]);
+      }
+      bushes = [];
+
+      for(var i = 0; i < c; i++){
+        var cloudModel;
+        var cloudMTL;
+        var rand = Math.random();
+
+        if (rand < 1/6) {
+          cloudModel = '../../Assets/clouds/bigCloud.obj';
+          cloudMTL = '../../Assets/Trees/Tree2.obj.mtl';
+        } else if(rand < 2/6){
+          cloudModel = '../../Assets/clouds/cloud1.obj';
+          cloudMTL = '../../Assets/Trees/Tree2.obj.mtl';
+        } else if(rand < 3/6) {
+          cloudModel = '../../Assets/clouds/cloud2.obj';
+          cloudMTL = '../../Assets/Trees/Tree2.obj.mtl';
+        }else if(rand < 4/6){
+          cloudModel = '../../Assets/clouds/cloud3.obj';
+          cloudMTL = '../../Assets/Trees/Tree2.obj.mtl';
+        }else if(rand < 5/6){
+          cloudModel = '../../Assets/clouds/cloud4.obj';
+          cloudMTL = '../../Assets/Trees/Tree2.obj.mtl';      
+        }else{
+          cloudModel = '../../Assets/clouds/cloud5.obj';
+          cloudMTL = '../../Assets/Trees/Tree2.obj.mtl';      
+        }
+
+        loadTreeModel(cloudModel, cloudMTL).then((root) =>{
+
+          //adjust rotation
+          root.rotation.y = Math.random() *  Math.PI;
+
+          //adjust gap
+          var bbox = new THREE.Box3().setFromObject(root);
+          var width = bbox.max.x - bbox.min.x;
+          root.userData.width = width;
+
+          root.position.copy(generatePosition(clouds, 100, 75, 50));  //clouds, size, gap, yPosition
+          
+          //Adjust y-position
+          var height = bbox.max.y - bbox.min.y;
+          root.position.y += height / 2;
+          
+          scene.add(root);
+          clouds.push(root);
+        });
+
+      }
+    }
+
+    addClouds();
+
     /*const cloudModel = '../../Assets/cloud.obj';
     objLoader.load (cloudModel, (cloud) => {
       const cloudMaterial = new THREE.MeshBasicMaterial({color: 0xffffff, transparent: true, opacity: 0.6});
