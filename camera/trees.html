@@ -534,8 +534,8 @@ for (let i = 0; i < 10; i++) {
   addAnimalModel(birdModel, 0.05, -2);
 }
 
-// Add squirrels x10
-for (let i = 0; i < 10; i++) {
+// Add squirrels x15
+for (let i = 0; i < 15; i++) {
   addAnimalModel(squirrelModel, 0.005, -2);
 }
 
@@ -543,6 +543,21 @@ for (let i = 0; i < 10; i++) {
 for (let i = 0; i < 5; i++) {
   addAnimalModel(chickModel, 0.5, -2);
 }
+
+const listener = new THREE.AudioListener();
+camera.add( listener );
+
+// create a global audio source
+const sound = new THREE.Audio( listener );
+
+// load a sound and set it as the Audio object's buffer
+const audioLoader = new THREE.AudioLoader();
+audioLoader.load( '../../Assets/Sounds/Ost1.mp3', function( buffer ) {
+	sound.setBuffer( buffer );
+	sound.setLoop( true );
+	sound.setVolume( 0.5 );
+	sound.play();
+});
       
 
       //Path rendering
