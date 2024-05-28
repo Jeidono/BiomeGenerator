@@ -96,9 +96,15 @@
 
 //create light
 var light = new THREE.SpotLight(0xE6E6C7, 1, 1000);
-light.position.set(-50, 75, -50);
+light.position.set(-55, 75, -55);
 
 scene.add(light);
+
+var light2 = new THREE.SpotLight(0xE6E6C7, 1, 300);
+light2.position.set(90, 6, 90);
+
+scene.add(light2);
+
 
 //adding the Sun
 const geometry = new THREE.SphereGeometry( 15, 32, 16 ); 
@@ -156,7 +162,6 @@ sprite.position.copy(sun.position);
 const grassTexture = new THREE.TextureLoader().load('../../Assets/grass.jpg');
 const grassGeometry = new THREE.PlaneGeometry(10, 10);
 const grassMaterial = new THREE.MeshBasicMaterial({ map: grassTexture, side: THREE.DoubleSide });
-const grassplaneNum = 10;
 const numRows = 12;
 const numCols = 12;
 const planeSize = 10;
@@ -168,7 +173,7 @@ for (let row = 0; row < numRows; row++) {
         const zPos = row * (planeSize) - (numRows * (planeSize)) / 2;
 
         const grassPlane = new THREE.Mesh(grassGeometry, grassMaterial);
-        grassPlane.position.set(xPos, -2.01, zPos);
+        grassPlane.position.set(xPos + 10, -2.01, zPos+ 10);
         grassPlane.rotation.x = -Math.PI / 2;
         scene.add(grassPlane);
     }
@@ -185,7 +190,7 @@ const plyLoader = new PLYLoader();
 
   //generate position for trees
   function generatePosition(trees, size, gap, yPosition){
-    var maxAttempts = 100000;
+    var maxAttempts = 10000000000;
     var attempts = 0;
     
     while (attempts < maxAttempts){
@@ -260,7 +265,7 @@ const plyLoader = new PLYLoader();
           var width = bbox.max.x - bbox.min.x;
           root.userData.width = width;
 
-          root.position.copy(generatePosition(trees, 75, 75, -6.5));  //trees, size, gap, yPosition
+          root.position.copy(generatePosition(trees, 100, 75, -6.5));  //trees, size, gap, yPosition
           //Adjust y-position
           var height = bbox.max.y - bbox.min.y;
           root.position.y += height / 2;
