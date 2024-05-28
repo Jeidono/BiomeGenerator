@@ -7658,7 +7658,7 @@ v 12.3706799 -1.1456549 -0.2488850
 # 3822 vertices, 0 vertices normals
 
 
-usemtl material_0
+usemtl material_18
 f 1//1 2//2 5//5 4//4
 f 3//3 4//4 7//7 6//6
 f 4//4 5//5 8//8 7//7
