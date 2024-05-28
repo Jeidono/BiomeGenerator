@@ -608,6 +608,78 @@ audioLoader.load( '../../Assets/Sounds/Ost1.mp3', function( buffer ) {
 	sound.play();
 });
 
+function addTreesAroundPerimeter() {
+    // Clear existing trees
+    for (let i = 0; i < trees.length; i++) {
+        scene.remove(trees[i]);
+    }
+    trees = [];
+
+    // Define parameters for tree generation
+    const numTrees = 500; 
+    const perimeterSize = 60; 
+    const treeGap = 5; 
+    const yPosition = -6.5; 
+
+    // Generate trees around the perimeter
+    for (let i = 0; i < numTrees; i++) {
+        // Determine position along the perimeter
+        const angle = (i / numTrees) * Math.PI * 2;
+        const x = Math.cos(angle) * perimeterSize;
+        const z = Math.sin(angle) * perimeterSize;
+
+        // Adjust position to create a gap between trees and the edge
+        const xOffset = Math.cos(angle) * treeGap;
+        const zOffset = Math.sin(angle) * treeGap;
+
+        // Create a random tree model
+        const rand = Math.random();
+        let treeModel, treeMTL;
+
+        if (rand < 1/5) {
+            treeModel = '../../Assets/Trees/Tree.obj';
+            treeMTL = '../../Assets/Trees/Tree2.obj.mtl';
+        } else if (rand < 2/5) {
+            treeModel = '../../Assets/Trees/Tree2.obj';
+            treeMTL = '../../Assets/Trees/Tree2.obj.mtl';
+        } else if (rand < 3/5) {
+            treeModel = '../../Assets/Trees/tree3.obj';
+            treeMTL = '../../Assets/Trees/Tree2.obj.mtl';
+        } else if (rand < 4/5) {
+            treeModel = '../../Assets/Trees/appleTree.obj';
+            treeMTL = '../../Assets/Trees/Tree2.obj.mtl';
+        } else {
+            treeModel = '../../Assets/Trees/orangeTree.obj';
+            treeMTL = '../../Assets/Trees/Tree2.obj.mtl';
+        }
+
+        // Load and position the tree model
+        loadTreeModel(treeModel, treeMTL).then((root) => {
+            // Adjust rotation
+            root.rotation.y = Math.random() * Math.PI;
+
+            // Adjust gap
+            const bbox = new THREE.Box3().setFromObject(root);
+            const width = bbox.max.x - bbox.min.x;
+            root.userData.width = width;
+
+            // Set tree position
+            root.position.set(x - xOffset, yPosition, z - zOffset);
+
+            // Adjust y-position
+            const height = bbox.max.y - bbox.min.y;
+            root.position.y += height / 2;
+
+            // Add tree to scene
+            scene.add(root);
+            trees.push(root);
+        });
+    }
+}
+
+// Call the function to add trees tightly around the perimeter
+addTreesAroundPerimeter();
+
 
       //Path rendering
       function generateRandomPoints(numPoints, radius) {
