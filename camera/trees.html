@@ -177,7 +177,7 @@ for (let row = 0; row < numRows; row++) {
 
 //loading in different tree types
 var trees = [];
-var n = 250;
+var n = 150;
 
 const objLoader = new OBJLoader();
 const mtlLoader = new MTLLoader();
@@ -232,18 +232,21 @@ const plyLoader = new PLYLoader();
         var treeMTL;
         var rand = Math.random();
 
-        if (rand < 1/4) {
+        if (rand < 1/5) {
           treeModel = '../../Assets/Trees/Tree.obj';
           treeMTL = '../../Assets/Trees/Tree2.obj.mtl';
-        } else if(rand < 2/4){
+        } else if(rand < 2/5){
           treeModel = '../../Assets/Trees/Tree2.obj';
           treeMTL = '../../Assets/Trees/Tree2.obj.mtl';
         }
-         else if(rand < 3/4) {
+         else if(rand < 3/5) {
           treeModel = '../../Assets/Trees/tree3.obj';
           treeMTL = '../../Assets/Trees/Tree2.obj.mtl';
-        }else{
+        }else if (rand < 4/5){
           treeModel = '../../Assets/Trees/appleTree.obj';
+          treeMTL = '../../Assets/Trees/Tree2.obj.mtl';
+        }else{
+          treeModel = '../../Assets/Trees/orangeTree.obj';
           treeMTL = '../../Assets/Trees/Tree2.obj.mtl';
         }
 
@@ -257,7 +260,7 @@ const plyLoader = new PLYLoader();
           var width = bbox.max.x - bbox.min.x;
           root.userData.width = width;
 
-          root.position.copy(generatePosition(trees, 100, 100, -6.5));  //trees, size, gap, yPosition
+          root.position.copy(generatePosition(trees, 75, 75, -6.5));  //trees, size, gap, yPosition
           //Adjust y-position
           var height = bbox.max.y - bbox.min.y;
           root.position.y += height / 2;
