@@ -177,7 +177,7 @@ for (let row = 0; row < numRows; row++) {
 
 //loading in different tree types
 var trees = [];
-var n = 200;
+var n = 250;
 
 const objLoader = new OBJLoader();
 const mtlLoader = new MTLLoader();
@@ -275,7 +275,7 @@ const plyLoader = new PLYLoader();
 
     //add bushes and other decorative assets into the scene
     var bushes = [];
-    var a = 50;
+    var a = 75;
 
     function addBushes()
     {
@@ -316,7 +316,7 @@ const plyLoader = new PLYLoader();
           var width = bbox.max.x - bbox.min.x;
           root.userData.width = width;
 
-          root.position.copy(generatePosition(bushes, 100, 100, -2.5));  //bushes, size, gap, yPosition
+          root.position.copy(generatePosition(bushes, 100, 50, -2.5));  //bushes, size, gap, yPosition
           //Adjust y-position
           var height = bbox.max.y - bbox.min.y;
           root.position.y += height / 2;
