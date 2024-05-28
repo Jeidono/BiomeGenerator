@@ -62,22 +62,22 @@
     document.body.appendChild(renderer.domElement );
   
 		//controls for camera
-		var controls = new FirstPersonControls(camera, renderer.domElement);
+		/*var controls = new FirstPersonControls(camera, renderer.domElement);
 
 		var MyUpdateLoop = function(){
 		controls.update(1);
 		renderer.render(scene,camera);
 		requestAnimationFrame(MyUpdateLoop);
-		};
+		};*/
 
-  /*var controls = new OrbitControls( camera, renderer.domElement );
+  var controls = new OrbitControls( camera, renderer.domElement );
   var MyUpdateLoop = function ( )
   {
     renderer.render(scene,camera);
     controls.update();
     requestAnimationFrame(MyUpdateLoop);
 
-  };*/
+  };
 
   requestAnimationFrame(MyUpdateLoop);
 
@@ -432,7 +432,7 @@ const plyLoader = new PLYLoader();
 
     // adding the clouds
     var clouds = [];
-    var c = 50;
+    var c = 60;
 
     function addClouds()
     {
@@ -496,8 +496,47 @@ const plyLoader = new PLYLoader();
 
       }
     }
-
     addClouds();
+
+    var lowestZAxis = -90;
+    var highestZAxis = 90;
+
+    function reloopClouds(){
+      for (var i = 0; i < c; i++){
+        if(clouds[i]){
+          if(clouds[i].position.z < lowestZAxis) {
+          clouds[i].position.x = (Math.random() - 0.5) * 150;
+          clouds[i].position.y = 50;
+          clouds[i].position.z = highestZAxis;
+          }else if(clouds[i].position.z > highestZAxis){
+            clouds[i].position.x = (Math.random() - 0.5) * 150;
+            clouds[i].position.y = 50;
+            clouds[i].position.z = lowestZAxis;
+          }
+        }
+      }
+      controls.update();
+      renderer.render(scene, camera);
+    }
+
+    var movingSpeed = 0.008;
+
+    var moveCloudsZ = function() {
+      for(var i = 0; i < c; i++) {
+        if(clouds[i]){
+          clouds[i].position.z += movingSpeed;
+        }
+      }
+      controls.update();
+      renderer.render(scene, camera);
+    }
+
+    animate = function(){
+      requestAnimationFrame(animate);
+      moveCloudsZ();
+      reloopClouds();
+    }
+    requestAnimationFrame(animate);
     
 
     /*const cloudModel = '../../Assets/cloud.obj';
