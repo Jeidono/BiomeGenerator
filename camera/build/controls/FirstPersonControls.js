@@ -19,8 +19,8 @@ class FirstPersonControls {
 
 		this.enabled = true;
 
-		this.movementSpeed = 0.2;
-		this.lookSpeed = 0.0004;
+		this.movementSpeed = 0.035;
+		this.lookSpeed = 0.0007;
 
 		this.lookVertical = true;
 		this.autoForward = false;
