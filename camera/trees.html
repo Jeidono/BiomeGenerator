@@ -275,7 +275,7 @@ const plyLoader = new PLYLoader();
 
     //add bushes and other decorative assets into the scene
     var bushes = [];
-    var a = 75;
+    var a = 300;
 
     function addBushes()
     {
@@ -316,7 +316,7 @@ const plyLoader = new PLYLoader();
           var width = bbox.max.x - bbox.min.x;
           root.userData.width = width;
 
-          root.position.copy(generatePosition(bushes, 100, 50, -2.5));  //bushes, size, gap, yPosition
+          root.position.copy(generatePosition(bushes, 100, 75, -2.5));  //bushes, size, gap, yPosition
           //Adjust y-position
           var height = bbox.max.y - bbox.min.y;
           root.position.y += height / 2;
@@ -329,6 +329,88 @@ const plyLoader = new PLYLoader();
     }
 
     addBushes();
+
+    //add grass assets into the scene
+    var grass = [];
+    var g = 500;
+
+    function addGrass()
+    {
+      for(i = 0; i < grass.length; i++){
+        scene.remove(grass[i]);
+      }
+      bushes = [];
+
+      for(var i = 0; i < g; i++){
+        var grassModel;
+        var grassMTL;
+        var rand = Math.random();
+
+        if (rand < 1/12) {
+          grassModel = '../../Assets/Grass/grass1.obj';
+          grassMTL = '../../Assets/Trees/Tree2.obj.mtl';
+        } else if(rand < 2/12){
+          grassModel = '../../Assets/Grass/grass2.obj';
+          grassMTL = '../../Assets/Trees/Tree2.obj.mtl';
+        } else if(rand < 3/12) {
+          grassModel = '../../Assets/Grass/grass3.obj';
+          grassMTL = '../../Assets/Trees/Tree2.obj.mtl';
+        }else if(rand < 4/12){
+          grassModel = '../../Assets/Grass/rock1.obj';
+          grassMTL = '../../Assets/Trees/Tree2.obj.mtl';
+        }else if(rand < 5/12){
+          grassModel = '../../Assets/Grass/rock2.obj';
+          grassMTL = '../../Assets/Trees/Tree2.obj.mtl';
+        }else if(rand < 6/12){
+          grassModel = '../../Assets/Grass/rock3.obj';
+          grassMTL = '../../Assets/Trees/Tree2.obj.mtl';
+        }else if(rand < 7/12){
+          grassModel = '../../Assets/Grass/rock4.obj';
+          grassMTL = '../../Assets/Trees/Tree2.obj.mtl';
+        }else if(rand < 8/12){
+          grassModel = '../../Assets/Grass/bShrooms.obj';
+          grassMTL = '../../Assets/Trees/Tree2.obj.mtl';
+        }else if(rand < 9/12){
+          grassModel = '../../Assets/Grass/rShroom.obj';
+          grassMTL = '../../Assets/Trees/Tree2.obj.mtl';
+        }else if(rand < 10/12){
+          grassModel = '../../Assets/Grass/flower1.obj';
+          grassMTL = '../../Assets/Trees/Tree2.obj.mtl';
+        }else if(rand < 11/12){
+          grassModel = '../../Assets/Grass/flower2.obj';
+          grassMTL = '../../Assets/Trees/Tree2.obj.mtl';
+        }
+        
+        
+        
+        else{
+          grassModel = '../../Assets/Grass/flower3.obj';
+          grassMTL = '../../Assets/Trees/Tree2.obj.mtl';      
+        }
+
+        loadTreeModel(grassModel, grassMTL).then((root) =>{
+
+          //adjust rotation
+          root.rotation.y = Math.random() *  Math.PI;
+
+          //adjust gap
+          var bbox = new THREE.Box3().setFromObject(root);
+          var width = bbox.max.x - bbox.min.x;
+          root.userData.width = width;
+
+          root.position.copy(generatePosition(bushes, 100, 0, -2.4));  //bushes, size, gap, yPosition
+          //Adjust y-position
+          var height = bbox.max.y - bbox.min.y;
+          root.position.y += height / 2;
+          
+          scene.add(root);
+          grass.push(root);
+        });
+
+      }
+    }
+
+    addGrass();
 
 
 
