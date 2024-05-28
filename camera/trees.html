@@ -610,31 +610,62 @@ audioLoader.load( '../../Assets/Sounds/Ost1.mp3', function( buffer ) {
 
 
       //Path rendering
-      function generateRandomCircularPath(radius, segments) {
-            const points = [];
-            for (let i = 0; i <= segments; i++) {
-                const angle = (i / segments) * Math.PI * 2;
-                const x = Math.cos(angle) * (radius + Math.random() * 5); // Adding some randomness
-                const z = Math.sin(angle) * (radius + Math.random() * 5); // Adding some randomness
-                points.push(new THREE.Vector3(x, -2, z));
-            }
-            return points;
+      function generateRandomPoints(numPoints, radius) {
+  const points = [];
+  const minDistance = radius / (numPoints / 2);
+  for (let i = 0; i < numPoints; i++) {
+    let point;
+    let validPoint = false;
+
+    while (!validPoint) {
+      const angle = i * (2 * Math.PI / numPoints);
+      const x = radius * Math.cos(angle) + (Math.random() - 0.5) * radius;
+      const z = radius * Math.sin(angle) + (Math.random() - 0.5) * radius;
+      point = new THREE.Vector3(x, -3.5, z);
+
+      validPoint = true;
+
+      // Check for intersections with existing points
+      for (let j = 0; j < points.length - 1; j++) {
+        const distance = point.distanceTo(points[j]);
+        if (distance < minDistance) {
+          validPoint = false;
+          break;
         }
+      }
+    }
 
-        const radius = 30;
-        const segments = 50;
-        const pathPoints = generateRandomCircularPath(radius, segments);
+    points.push(point);
+  }
 
-    const pathGeometry = new THREE.BufferGeometry().setFromPoints(pathPoints);
-        const pathMaterial = new THREE.LineBasicMaterial({ color: 0xff0000 });
-        const pathLine = new THREE.Line(pathGeometry, pathMaterial);
-        scene.add(pathLine);
+  return points;
+}
 
-        function animate() {
-            requestAnimationFrame(animate);
-            renderer.render(scene, camera);
-        }
-        animate();
+const numPoints = 10;
+const radius = 38;
+const points = generateRandomPoints(numPoints, radius);
+points.push(points[0]);
+
+const curve = new THREE.CatmullRomCurve3(points);
+
+// Create the geometry from the curve with TubeGeometry
+const tubeGeometry = new THREE.TubeGeometry(curve, 100, 2, 8, true);
+
+// Create a material
+const pathmaterial = new THREE.MeshStandardMaterial({ color: 200505 });
+
+// Create the mesh
+const mesh = new THREE.Mesh(tubeGeometry, pathmaterial);
+
+// Add the mesh to the scene
+scene.add(mesh);
+
+function animate() {
+  requestAnimationFrame(animate);
+
+  renderer.render(scene, camera);
+}
+animate();
 
 
 
