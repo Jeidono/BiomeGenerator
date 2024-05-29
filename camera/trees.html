@@ -46,6 +46,8 @@
     import { MTLLoader } from './build/controls/MTLLoader.js';
     import {PLYLoader} from './build/controls/PLYLoader.js';
     import { Lensflare, LensflareElement } from './build/controls/Lensflare.js';
+    import { PointerLockControls } from './build/controls/PointerLockControls.js';
+
 
     //creating scene
     var scene = new THREE.Scene( );
@@ -68,7 +70,7 @@
 		controls.update(1);
 		renderer.render(scene,camera);
 		requestAnimationFrame(MyUpdateLoop);
-		};*/
+		};
 
   var controls = new OrbitControls( camera, renderer.domElement );
   var MyUpdateLoop = function ( )
@@ -77,7 +79,16 @@
     controls.update();
     requestAnimationFrame(MyUpdateLoop);
 
-  };
+  };*/
+
+  var controls = new PointerLockControls(camera, renderer.domElement);
+  document.addEventListener('click', function () {
+    controls.lock();
+  }, false);
+  var MyUpdateLoop = function(){
+    renderer.render(scene, camera);
+    requestAnimationFrame(MyUpdateLoop);
+  }
 
   requestAnimationFrame(MyUpdateLoop);
 
@@ -162,8 +173,8 @@ sprite.position.copy(sun.position);
 const grassTexture = new THREE.TextureLoader().load('../../Assets/grass.jpg');
 const grassGeometry = new THREE.PlaneGeometry(10, 10);
 const grassMaterial = new THREE.MeshBasicMaterial({ map: grassTexture, side: THREE.DoubleSide });
-const numRows = 15;
-const numCols = 15;
+const numRows = 17;
+const numCols = 17;
 const planeSize = 10;
 for (let row = 0; row < numRows; row++) {
     for (let col = 0; col < numCols; col++) {
@@ -237,8 +248,10 @@ const objLoader = new OBJLoader();
 const mtlLoader = new MTLLoader();
 const plyLoader = new PLYLoader();
 
+
+
   //generate position for trees
-  function generatePosition(trees, path, size, gap, yPosition){
+  function generatePosition(trees, size, gap, yPosition){
     var maxAttempts = 100000;
     var attempts = 0;
     
@@ -248,12 +261,10 @@ const plyLoader = new PLYLoader();
         yPosition,
         (Math.random() - 0.5) * size
       );
-
       var collides = trees.some(trees => trees.geometry && position.distanceTo(trees.position) <= trees.geometry.parameters.width + gap);
       
-      var tooCloseToPath = path.geometry.vertices.some(vertex => position.distanceTo(vertex) <= gap);
 
-    if(!collides && !tooCloseToPath) {
+    if(!collides) {
         return position;
       }
       attempts++;
@@ -372,7 +383,7 @@ const plyLoader = new PLYLoader();
           }
         }
       }
-      controls.update();
+      //controls.update();
       renderer.render(scene, camera);
     }
 
@@ -386,7 +397,7 @@ const plyLoader = new PLYLoader();
           particles[i].position.z += zSpeed;
         }
       }
-      controls.update();
+      //controls.update();
       renderer.render(scene, camera);
     }
 
@@ -625,7 +636,7 @@ const plyLoader = new PLYLoader();
           }
         }
       }
-      controls.update();
+      //controls.update();
       renderer.render(scene, camera);
     }
 
@@ -637,7 +648,7 @@ const plyLoader = new PLYLoader();
           clouds[i].position.z += movingSpeed;
         }
       }
-      controls.update();
+      //controls.update();
       renderer.render(scene, camera);
     }
       // Function to generate random positions for animals
@@ -766,16 +777,30 @@ function addTreesAroundPerimeter() {
 
 addTreesAroundPerimeter();
 
+//get camera to just follow path
+var counter = 0;
+
 function animate() {
   requestAnimationFrame(animate);
 
-  //moveCloudsZ();
-  //reloopClouds();
+  moveCloudsZ();
+  reloopClouds();
 
-  //moveParticlesY();
-  //reloopParticles();
+  moveParticlesY();
+  reloopParticles();
 
-  renderer.render(scene, camera);
+  if (counter <= 1) {
+        var point = curve.getPointAt(counter);
+        camera.position.copy(point);
+        camera.position.y += 5;
+
+        counter += 0.0006;
+    }else {
+      counter = 0;
+    }
+
+    //controls.update();
+    renderer.render(scene, camera);
   
 }
 requestAnimationFrame(animate);
