@@ -62,22 +62,22 @@
     document.body.appendChild(renderer.domElement );
   
 		//controls for camera
-		/*var controls = new FirstPersonControls(camera, renderer.domElement);
+		var controls = new FirstPersonControls(camera, renderer.domElement);
 
 		var MyUpdateLoop = function(){
 		controls.update(1);
 		renderer.render(scene,camera);
 		requestAnimationFrame(MyUpdateLoop);
-		};*/
+		};
 
-  var controls = new OrbitControls( camera, renderer.domElement );
+  /*var controls = new OrbitControls( camera, renderer.domElement );
   var MyUpdateLoop = function ( )
   {
     renderer.render(scene,camera);
     controls.update();
     requestAnimationFrame(MyUpdateLoop);
 
-  };
+  };*/
 
   requestAnimationFrame(MyUpdateLoop);
 
@@ -162,8 +162,8 @@ sprite.position.copy(sun.position);
 const grassTexture = new THREE.TextureLoader().load('../../Assets/grass.jpg');
 const grassGeometry = new THREE.PlaneGeometry(10, 10);
 const grassMaterial = new THREE.MeshBasicMaterial({ map: grassTexture, side: THREE.DoubleSide });
-const numRows = 12;
-const numCols = 12;
+const numRows = 15;
+const numCols = 15;
 const planeSize = 10;
 
 
@@ -189,8 +189,8 @@ const mtlLoader = new MTLLoader();
 const plyLoader = new PLYLoader();
 
   //generate position for trees
-  function generatePosition(trees, size, gap, yPosition){
-    var maxAttempts = 10000000000;
+  function generatePosition(trees, size, gap, yPosition, path){
+    var maxAttempts = 100000;
     var attempts = 0;
     
     while (attempts < maxAttempts){
@@ -200,10 +200,9 @@ const plyLoader = new PLYLoader();
         (Math.random() - 0.5) * size
       );
 
-      var collides = trees.some(trees => trees.geometry 
-      && position.distanceTo(trees.position) <=
-    trees.geometry.parameters.width + gap);
-      if(!collides) {
+      var collides = trees.some(trees => trees.geometry && position.distanceTo(trees.position) <= trees.geometry.parameters.width + gap);
+    
+    if(!collides) {
         return position;
       }
       attempts++;
@@ -590,17 +589,6 @@ const plyLoader = new PLYLoader();
       controls.update();
       renderer.render(scene, camera);
     }
-
-    animate = function(){
-      requestAnimationFrame(animate);
-      moveCloudsZ();
-      reloopClouds();
-
-      moveParticlesY();
-      reloopParticles();
-    }
-    requestAnimationFrame(animate);
- 
       // Function to generate random positions for animals
       function generateAnimalPosition(size, yPosition) {
         return new THREE.Vector3(
@@ -665,8 +653,8 @@ function addTreesAroundPerimeter() {
 
     // Define parameters for tree generation
     const numTrees = 500; 
-    const perimeterSize = 60; 
-    const treeGap = 5; 
+    const perimeterSize = 70; 
+    const treeGap = 1; 
     const yPosition = -6.5; 
 
     // Generate trees around the perimeter
@@ -725,12 +713,10 @@ function addTreesAroundPerimeter() {
     }
 }
 
-// Call the function to add trees tightly around the perimeter
 addTreesAroundPerimeter();
 
-
-      //Path rendering
-      function generateRandomPoints(numPoints, radius) {
+  //Path rendering
+  function generateRandomPoints(numPoints, radius) {
   const points = [];
   const minDistance = radius / (numPoints / 2);
   for (let i = 0; i < numPoints; i++) {
@@ -783,10 +769,16 @@ scene.add(mesh);
 function animate() {
   requestAnimationFrame(animate);
 
-  renderer.render(scene, camera);
-}
-animate();
+  //moveCloudsZ();
+  //reloopClouds();
 
+  //moveParticlesY();
+  //reloopParticles();
+
+  renderer.render(scene, camera);
+  
+}
+requestAnimationFrame(animate);
 
 
 
