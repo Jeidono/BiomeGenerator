@@ -309,7 +309,7 @@ const plyLoader = new PLYLoader();
     addParticles();
 
     function reloopParticles(){
-      for (var i = 0; i < c; i++){
+      for (var i = 0; i < p; i++){
         if(particles[i]){
           if(particles[i].position.y < lowestYAxis) {
             particles[i].position.x = (Math.random() - 0.5) * 100;
@@ -330,7 +330,7 @@ const plyLoader = new PLYLoader();
     var zSpeed = 0.05;
 
     var moveParticlesY = function() {
-      for(var i = 0; i < c; i++) {
+      for(var i = 0; i < p; i++) {
         if(particles[i]){
           particles[i].position.y += ParticleSpeed;
           particles[i].position.z += zSpeed;
