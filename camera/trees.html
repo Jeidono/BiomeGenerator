@@ -625,48 +625,167 @@ const plyLoader = new PLYLoader();
       const squirrelModel = '../../Assets/Animal/squirrel.obj';
       const chickModel = '../../Assets/Animal/chick.obj';
 
-// Add birds x10
-for (let i = 0; i < 10; i++) {
+// Add birds x15
+for (let i = 0; i < 20; i++) {
   addAnimalModel(birdModel, 0.05, -2);
 }
 
-// Add squirrels x10
-for (let i = 0; i < 10; i++) {
+// Add squirrels x20
+for (let i = 0; i < 20; i++) {
   addAnimalModel(squirrelModel, 0.005, -2);
 }
 
-// Add chicks x5
-for (let i = 0; i < 5; i++) {
+// Add chicks x10
+for (let i = 0; i < 10; i++) {
   addAnimalModel(chickModel, 0.5, -2);
 }
       
+// create an AudioListener and add it to the camera
+const listener = new THREE.AudioListener();
+camera.add( listener );
+
+// create a global audio source
+const sound = new THREE.Audio( listener );
+
+// load a sound and set it as the Audio object's buffer
+const audioLoader = new THREE.AudioLoader();
+audioLoader.load( '../../Assets/Sounds/Ost1.mp3', function( buffer ) {
+	sound.setBuffer( buffer );
+	sound.setLoop( true );
+	sound.setVolume( 0.5 );
+	sound.play();
+});
+
+function addTreesAroundPerimeter() {
+    // Clear existing trees
+    for (let i = 0; i < trees.length; i++) {
+        scene.remove(trees[i]);
+    }
+    trees = [];
+
+    // Define parameters for tree generation
+    const numTrees = 500; 
+    const perimeterSize = 60; 
+    const treeGap = 5; 
+    const yPosition = -6.5; 
+
+    // Generate trees around the perimeter
+    for (let i = 0; i < numTrees; i++) {
+        // Determine position along the perimeter
+        const angle = (i / numTrees) * Math.PI * 2;
+        const x = Math.cos(angle) * perimeterSize;
+        const z = Math.sin(angle) * perimeterSize;
+
+        // Adjust position to create a gap between trees and the edge
+        const xOffset = Math.cos(angle) * treeGap;
+        const zOffset = Math.sin(angle) * treeGap;
+
+        // Create a random tree model
+        const rand = Math.random();
+        let treeModel, treeMTL;
+
+        if (rand < 1/5) {
+            treeModel = '../../Assets/Trees/Tree.obj';
+            treeMTL = '../../Assets/Trees/Tree2.obj.mtl';
+        } else if (rand < 2/5) {
+            treeModel = '../../Assets/Trees/Tree2.obj';
+            treeMTL = '../../Assets/Trees/Tree2.obj.mtl';
+        } else if (rand < 3/5) {
+            treeModel = '../../Assets/Trees/tree3.obj';
+            treeMTL = '../../Assets/Trees/Tree2.obj.mtl';
+        } else if (rand < 4/5) {
+            treeModel = '../../Assets/Trees/appleTree.obj';
+            treeMTL = '../../Assets/Trees/Tree2.obj.mtl';
+        } else {
+            treeModel = '../../Assets/Trees/orangeTree.obj';
+            treeMTL = '../../Assets/Trees/Tree2.obj.mtl';
+        }
+
+        // Load and position the tree model
+        loadTreeModel(treeModel, treeMTL).then((root) => {
+            // Adjust rotation
+            root.rotation.y = Math.random() * Math.PI;
+
+            // Adjust gap
+            const bbox = new THREE.Box3().setFromObject(root);
+            const width = bbox.max.x - bbox.min.x;
+            root.userData.width = width;
+
+            // Set tree position
+            root.position.set(x - xOffset, yPosition, z - zOffset);
+
+            // Adjust y-position
+            const height = bbox.max.y - bbox.min.y;
+            root.position.y += height / 2;
+
+            // Add tree to scene
+            scene.add(root);
+            trees.push(root);
+        });
+    }
+}
+
+// Call the function to add trees tightly around the perimeter
+addTreesAroundPerimeter();
+
 
       //Path rendering
-      function generateRandomCircularPath(radius, segments) {
-            const points = [];
-            for (let i = 0; i <= segments; i++) {
-                const angle = (i / segments) * Math.PI * 2;
-                const x = Math.cos(angle) * (radius + Math.random() * 5); // Adding some randomness
-                const z = Math.sin(angle) * (radius + Math.random() * 5); // Adding some randomness
-                points.push(new THREE.Vector3(x, -2, z));
-            }
-            return points;
+      function generateRandomPoints(numPoints, radius) {
+  const points = [];
+  const minDistance = radius / (numPoints / 2);
+  for (let i = 0; i < numPoints; i++) {
+    let point;
+    let validPoint = false;
+
+    while (!validPoint) {
+      const angle = i * (2 * Math.PI / numPoints);
+      const x = radius * Math.cos(angle) + (Math.random() - 0.5) * radius;
+      const z = radius * Math.sin(angle) + (Math.random() - 0.5) * radius;
+      point = new THREE.Vector3(x, -3.5, z);
+
+      validPoint = true;
+
+      // Check for intersections with existing points
+      for (let j = 0; j < points.length - 1; j++) {
+        const distance = point.distanceTo(points[j]);
+        if (distance < minDistance) {
+          validPoint = false;
+          break;
         }
+      }
+    }
 
-        const radius = 30;
-        const segments = 50;
-        const pathPoints = generateRandomCircularPath(radius, segments);
+    points.push(point);
+  }
 
-    const pathGeometry = new THREE.BufferGeometry().setFromPoints(pathPoints);
-        const pathMaterial = new THREE.LineBasicMaterial({ color: 0xff0000 });
-        const pathLine = new THREE.Line(pathGeometry, pathMaterial);
-        scene.add(pathLine);
+  return points;
+}
 
-        function animate() {
-            requestAnimationFrame(animate);
-            renderer.render(scene, camera);
-        }
-        animate();
+const numPoints = 10;
+const radius = 38;
+const points = generateRandomPoints(numPoints, radius);
+points.push(points[0]);
+
+const curve = new THREE.CatmullRomCurve3(points);
+
+// Create the geometry from the curve with TubeGeometry
+const tubeGeometry = new THREE.TubeGeometry(curve, 100, 2, 8, true);
+
+// Create a material
+const pathmaterial = new THREE.MeshStandardMaterial({ color: 200505 });
+
+// Create the mesh
+const mesh = new THREE.Mesh(tubeGeometry, pathmaterial);
+
+// Add the mesh to the scene
+scene.add(mesh);
+
+function animate() {
+  requestAnimationFrame(animate);
+
+  renderer.render(scene, camera);
+}
+animate();
 
 
 
