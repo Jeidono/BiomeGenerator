@@ -712,8 +712,10 @@ function addTreesAroundPerimeter() {
         });
     }
 }
-
 addTreesAroundPerimeter();
+
+
+
 
   //Path rendering
   function generateRandomPoints(numPoints, radius) {
@@ -739,8 +741,21 @@ addTreesAroundPerimeter();
           break;
         }
       }
+      for(let k = 0; k < trees.length; k++){
+        const distance = point.distanceTo(trees[k].position);
+        if(distance < minDistance) {
+          validPoint = false;
+          break;
+        }
+      }
+      for(let l = 0; l < bushes.length; l++){
+        const distance = point.distanceTo(bushes[l].position);
+        if(distance < minDistance) {
+          validPoint = false;
+          break;
+        }
+      }
     }
-
     points.push(point);
   }
 
