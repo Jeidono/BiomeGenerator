@@ -82,11 +82,28 @@
   };*/
 
   var controls = new PointerLockControls(camera, renderer.domElement);
+  var isPaused = false;
+
   document.addEventListener('click', function () {
-    controls.lock();
+    if(!isPaused){
+      controls.lock();
+    }
   }, false);
+
+  document.addEventListener('keydown', function(event) {
+    if(event.key ==='Escape'){
+      isPaused = !isPaused;
+      if(isPaused) {
+        controls.unlock();
+      }else{
+        controls.lock();
+      }
+    }
+  })
   var MyUpdateLoop = function(){
-    renderer.render(scene, camera);
+    if(!isPaused){
+      renderer.render(scene, camera);
+    }
     requestAnimationFrame(MyUpdateLoop);
   }
 
@@ -173,8 +190,8 @@ sprite.position.copy(sun.position);
 const grassTexture = new THREE.TextureLoader().load('../../Assets/grass.jpg');
 const grassGeometry = new THREE.PlaneGeometry(10, 10);
 const grassMaterial = new THREE.MeshBasicMaterial({ map: grassTexture, side: THREE.DoubleSide });
-const numRows = 17;
-const numCols = 17;
+const numRows = 25;
+const numCols = 25;
 const planeSize = 10;
 for (let row = 0; row < numRows; row++) {
     for (let col = 0; col < numCols; col++) {
@@ -771,6 +788,7 @@ function addTreesAroundPerimeter() {
             // Add tree to scene
             scene.add(root);
             trees.push(root);
+
         });
     }
 }
@@ -799,7 +817,6 @@ function animate() {
       counter = 0;
     }
 
-    //controls.update();
     renderer.render(scene, camera);
   
 }
