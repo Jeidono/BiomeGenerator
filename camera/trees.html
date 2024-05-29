@@ -278,7 +278,67 @@ const plyLoader = new PLYLoader();
     }
     addTrees();
 
+    //adding particles
+    var particles = [];
+    var p = 400;
+    var lowestYAxis = -2;
+    var highestYAxis = 11;
 
+    var colors = [0x396614, 0xBADF2A, 0xD87300];
+
+    function addParticles(){
+      for(i = 0; i < particles.length; i++){
+        scene.remove(particles[i]);
+      }
+      particles = [];
+
+      for(var i = 0; i < p; i++){
+        var particlesGeometry = new THREE.SphereGeometry(0.1,2,2);
+        var randomColor = colors[Math.floor(Math.random() * colors.length)];
+        var particlesMaterial = new THREE.MeshBasicMaterial({color: randomColor});
+        var particle = new THREE.Mesh(particlesGeometry, particlesMaterial);
+
+          particle.position.y = (Math.random() - 0.5) * highestYAxis;
+          particle.position.x = (Math.random() - 0.5) * 100;
+          particle.position.z = (Math.random() - 0.5) * 100;
+
+          scene.add(particle);
+          particles.push(particle);
+      }
+    }
+    addParticles();
+
+    function reloopParticles(){
+      for (var i = 0; i < c; i++){
+        if(particles[i]){
+          if(particles[i].position.y < lowestYAxis) {
+            particles[i].position.x = (Math.random() - 0.5) * 100;
+            particles[i].position.y = highestYAxis;
+            particles[i].position.z = (Math.random() - 0.5) * 100;
+          }else if(particles[i].position.y > highestYAxis){
+            particles[i].position.x = (Math.random() - 0.5) * 100;
+            particles[i].position.y = lowestYAxis;
+            particles[i].position.z = (Math.random() - 0.5) * 100;
+          }
+        }
+      }
+      controls.update();
+      renderer.render(scene, camera);
+    }
+
+    var ParticleSpeed = -0.09;
+    var zSpeed = 0.05;
+
+    var moveParticlesY = function() {
+      for(var i = 0; i < c; i++) {
+        if(particles[i]){
+          particles[i].position.y += ParticleSpeed;
+          particles[i].position.z += zSpeed;
+        }
+      }
+      controls.update();
+      renderer.render(scene, camera);
+    }
 
 
     //add bushes and other decorative assets into the scene
@@ -535,23 +595,11 @@ const plyLoader = new PLYLoader();
       requestAnimationFrame(animate);
       moveCloudsZ();
       reloopClouds();
+
+      moveParticlesY();
+      reloopParticles();
     }
     requestAnimationFrame(animate);
-    
-
-    /*const cloudModel = '../../Assets/cloud.obj';
-    objLoader.load (cloudModel, (cloud) => {
-      const cloudMaterial = new THREE.MeshBasicMaterial({color: 0xffffff, transparent: true, opacity: 0.6});
-      cloud.traverse((child)=> {
-        if (child instanceof THREE.Mesh){
-          child.material = cloudMaterial;
-        }
-      })
-      cloud.scale.set(50, 50, 100);
-      cloud.position.set(0, 50, 0);
-      scene.add(cloud);
-    });*/
-    
  
       // Function to generate random positions for animals
       function generateAnimalPosition(size, yPosition) {
